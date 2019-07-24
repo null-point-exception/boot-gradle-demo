@@ -1,5 +1,5 @@
 # boot-gradle-demo
-springboot2.1+gradle5.5+mysql5.7+mybatis
+springboot2.1+gradle5.5+mysql5.7+mybatisplus3.1
 
 ### gradle注意事项
 - settings.gradle是全局配置

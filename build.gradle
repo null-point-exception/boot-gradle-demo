@@ -52,12 +52,10 @@ repositories {
 
 // 项目依赖列表
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile "org.springframework.boot:spring-boot-starter-web"
     runtime "mysql:mysql-connector-java"
-    //配置mybatis 数据源
-    compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:${bootmybatisVersion}"
     // mybatis-plus
-    //compile "com.baomidou:mybatis-plus-boot-starter:${mybatisplusVersion}"
+    compile "com.baomidou:mybatis-plus-boot-starter:${mybatisplusVersion}"
     // 定义lombok依赖
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"

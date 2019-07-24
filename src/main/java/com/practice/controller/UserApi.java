@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 用户接口
+ * 用户接口.
  *
  * @author kexin.ding
  */
@@ -73,7 +73,7 @@ public class UserApi {
     }
 
     /**
-     * 根据id获取用户详情
+     * 根据id获取用户详情.
      *
      * @param id 用户ID
      * @return 用户

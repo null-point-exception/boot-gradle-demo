@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @SpringBootApplication
-@MapperScan("com.practice.dao*")
 public class Application {
 
-    @GetMapping("test")
+    @GetMapping
     public String test() {
-        return "This is a test.";
+        return "Success.";
     }
 
     public static void main(String[] args) {

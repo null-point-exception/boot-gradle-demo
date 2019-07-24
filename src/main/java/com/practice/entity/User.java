@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * 用户
+ * 用户.
  *
  * @author kexin.ding
  */
