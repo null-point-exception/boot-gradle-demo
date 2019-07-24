@@ -1,9 +1,11 @@
 package com.practice.controller;
 
 import com.practice.entity.User;
+import com.practice.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,9 @@ import java.util.List;
 @RestController
 @RequestMapping("api/user")
 public class UserApi {
+
+    @Resource
+    private UserService service;
 
     private static List<User> users = new ArrayList<>();
 
@@ -75,12 +80,7 @@ public class UserApi {
      */
     @GetMapping("{id}")
     public User getUserById(@PathVariable("id") String id) {
-        for (User u : users) {
-            if(u.getId().equals(id)) {
-                return u;
-            }
-        }
-        return null;
+        return service.findById(id);
     }
 
     /**
