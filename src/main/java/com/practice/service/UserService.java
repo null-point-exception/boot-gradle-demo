@@ -1,5 +1,6 @@
 package com.practice.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.practice.entity.User;
 
 /**
@@ -16,5 +17,12 @@ public interface UserService {
      * @return 用户详情
      */
     User findById(String id);
+
+    /**
+     * 查询用户列表.
+     *
+     * @return 用户列表
+     */
+    IPage<User> selectUserPage(IPage<User> page);
 
 }

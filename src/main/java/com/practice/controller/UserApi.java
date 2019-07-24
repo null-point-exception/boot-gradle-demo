@@ -1,5 +1,7 @@
 package com.practice.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.practice.entity.User;
 import com.practice.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -86,11 +88,13 @@ public class UserApi {
     /**
      * 获取用户列表
      *
-     * @return 用户
+     * @return 用户列表
      */
     @GetMapping
-    public List<User> getUsers() {
-        return users;
+    public IPage<User> getUsersByPage(@RequestParam(value = "pageNo", defaultValue = "0")long pageNo,
+                                      @RequestParam(value = "pageSize", defaultValue = "5")long pageSize) {
+        IPage<User> page = new Page<>(pageNo, pageSize);
+        return service.selectUserPage(page);
     }
 
     /**
