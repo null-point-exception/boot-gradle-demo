@@ -2,8 +2,14 @@ package com.practice.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.practice.entity.User;
 import com.practice.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +22,7 @@ import java.util.List;
  *
  * @author kexin.ding
  */
+@Api(tags = "A01 用户信息接口")
 @RestController
 @RequestMapping("api/user")
 public class UserApi {
@@ -23,63 +30,45 @@ public class UserApi {
     @Resource
     private UserService service;
 
-    private static List<User> users = new ArrayList<>();
-
-    @PostConstruct
-    private void init() {
-        User user1 = new User();
-        user1.setId("1");
-        user1.setName("admin");
-        user1.setPassword("admin");
-        users.add(user1);
-
-        User user2 = new User();
-        user2.setId("2");
-        user2.setName("root");
-        user2.setPassword("root");
-        users.add(user2);
-    }
-
     /**
      * 新增用户
      *
      * @param user 新增用户信息
      * @return 用户
      */
+    @ApiOperation(value = "新增用户", notes = "新增用户")
+    @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User")
     @PostMapping
     public User addUser(@RequestBody User user) {
-        users.add(user);
-        return user;
+        return service.addUser(user);
     }
 
     /**
-     * 新增用户
+     * 修改用户
      *
      * @param id   用户id
-     * @param user 新增用户信息
+     * @param user 修改用户信息
      * @return 用户
      */
+    @ApiOperation(value = "修改用户", notes = "修改用户")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", example = "891fa31a63ae42f186efd8fcaad65f49"),
+            @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User"),
+    })
     @PutMapping("{id}")
     public User editUser(@PathVariable("id") String id, @RequestBody User user) {
-        User u = this.getUserById(id);
-        if (u == null) {
-            return u;
-        }
-        if (null != user.getName()) {
-            u.setName(user.getName());
-        }
-        if (null != user.getPassword()) {
-            u.setPassword(user.getPassword());
-        }
-        return u;
+        user.setId(id);
+        return service.editUser(user);
     }
 
     /**
-     * 根据id获取用户详情.
+     * 根据用户id获取用户详情.
      *
      * @param id 用户ID
      * @return 用户
      */
+    @ApiOperation(value = "根据用户id查询用户详情", notes = "根据用户id获取用户详情")
+    @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", example = "891fa31a63ae42f186efd8fcaad65f49")
     @GetMapping("{id}")
     public User getUserById(@PathVariable("id") String id) {
         return service.findById(id);
@@ -90,26 +79,44 @@ public class UserApi {
      *
      * @return 用户列表
      */
+    @ApiOperation(value = "获取用户列表", notes = "获取用户列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "当前页", required = true, dataType = "Integer", example = "1"),
+            @ApiImplicitParam(name = "pageSize", value = "页容量", required = true, dataType = "Integer", example = "5"),
+            @ApiImplicitParam(name = "delFlag", value = "删除标志", required = true, dataType = "String", example = "0"),
+    })
     @GetMapping
-    public IPage<User> getUsersByPage(@RequestParam(value = "pageNo", defaultValue = "0")long pageNo,
-                                      @RequestParam(value = "pageSize", defaultValue = "5")long pageSize) {
-        IPage<User> page = new Page<>(pageNo, pageSize);
-        return service.selectUserPage(page);
+    public PageInfo<User> getUsersByPage(@RequestParam(value = "pageNum", defaultValue = "1")int pageNum,
+                                      @RequestParam(value = "pageSize", defaultValue = "5")int pageSize,
+                                      @RequestParam(value = "delFlag", defaultValue = "0")String delFlag) {
+
+        return service.selectUsersByPage(pageNum, pageSize, delFlag);
     }
 
     /**
      * 删除用户
      *
      * @param id 用户id
-     * @return 用户
+     * @return 删除结果
      */
+    @ApiOperation(value = "删除用户", notes = "删除用户")
+    @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", example = "891fa31a63ae42f186efd8fcaad65f49")
     @DeleteMapping("{id}")
-    public User delUserById(@PathVariable("id") String id) {
-        User user = this.getUserById(id);
-        if (null != user) {
-            users.remove(user);
-        }
-        return user;
+    public int delUserById(@PathVariable("id") String id) {
+        return service.delUser(id);
+    }
+
+    /**
+     * 批量删除用户.
+     *
+     * @param ids 待删除的用户id集合
+     * @return 删除结果
+     */
+    @ApiOperation(value = "批量删除用户", notes = "批量删除用户")
+    @ApiImplicitParam(name = "ids", value = "用户主键集合", allowMultiple = true, required = true, dataType = "String", example = "891fa31a63ae42f186efd8fcaad65f49")
+    @DeleteMapping("batch")
+    public int delUserByIds(@RequestBody List<String> ids) {
+        return service.delUsers(ids);
     }
 
 }

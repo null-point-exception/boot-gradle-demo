@@ -1,14 +1,13 @@
 package com.practice.service.impl;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.practice.dao.UserMapper;
 import com.practice.entity.User;
 import com.practice.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,17 +22,38 @@ public class UserServiceImpl implements UserService {
     private UserMapper mapper;
 
     @Override
+    public User addUser(User user) {
+        return mapper.insert(user) > 0 ? user : null;
+    }
+
+    @Override
+    public User editUser(User user) {
+        return mapper.updateById(user) > 0 ? user : null;
+    }
+
+    @Override
+    public int delUser(String id) {
+        return mapper.deleteById(id);
+    }
+
+    @Override
+    public int delUsers(List<String> ids) {
+        return mapper.deleteBatchIds(ids);
+    }
+
+    @Override
     public User findById(String id) {
         return mapper.selectById(id);
     }
 
     @Override
-    public IPage<User> selectUserPage(IPage<User> page) {
-        // 不进行 count sql 优化，解决 MP 无法自动优化 SQL 问题，这时候你需要自己查询 count 部分
-        // page.setOptimizeCountSql(false);
-        // 当 total 为小于 0 或者设置 setSearchCount(false) 分页插件不会进行 count 查询
-        // 要点!! 分页返回的对象与传入的对象是同一个
-        return mapper.selectPage(page, null);
+    public List<User> selectUsers(String delFlag) {
+        return mapper.selectUsers(delFlag);
+    }
+
+    @Override
+    public PageInfo<User> selectUsersByPage(int pageNum, int pageSize, String delFlag) {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> selectUsers(delFlag));
     }
 
 }

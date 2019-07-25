@@ -6,7 +6,9 @@ buildscript {
         lombokVersion = "1.18.2"
         junitVersion = "4.12"
         bootmybatisVersion = "1.3.0"
-        mybatisplusVersion = "3.1.0"
+        mybatisplusVersion = "3.1.2"
+        bootpagehelperVersion = "1.2.5"
+        swagger2Version = "2.9.2"
         compileresourceVersion = "1.8"
         compiletargetVersion = "1.8"
     }
@@ -56,6 +58,11 @@ dependencies {
     runtime "mysql:mysql-connector-java"
     // mybatis-plus
     compile "com.baomidou:mybatis-plus-boot-starter:${mybatisplusVersion}"
+    // 分页插件
+    compile "com.github.pagehelper:pagehelper-spring-boot-starter:${bootpagehelperVersion}"
+    // swagger2
+    compile "io.springfox:springfox-swagger2:${swagger2Version}"
+    compile "io.springfox:springfox-swagger-ui:${swagger2Version}"
     // 定义lombok依赖
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"

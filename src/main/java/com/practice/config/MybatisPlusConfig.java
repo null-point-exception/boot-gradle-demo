@@ -20,15 +20,6 @@ import java.util.Properties;
 public class MybatisPlusConfig {
 
     /**
-     * 分页插件，自动识别数据库类型
-     */
-    @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        // paginationInterceptor.setLimit(你的最大单页限制数量，默认 500 条，小于 0 如 -1 不受限制);
-        return new PaginationInterceptor();
-    }
-
-    /**
      * 打印 sql
      */
     @Bean
