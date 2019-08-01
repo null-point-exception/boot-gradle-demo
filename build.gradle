@@ -55,6 +55,7 @@ repositories {
 // 项目依赖列表
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     runtime "mysql:mysql-connector-java"
     // mybatis-plus
     compile "com.baomidou:mybatis-plus-boot-starter:${mybatisplusVersion}"

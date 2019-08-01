@@ -3,6 +3,7 @@ package com.practice.entity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -43,6 +44,8 @@ public class User {
      * 创建时间
      */
     @ApiModelProperty(position = 5, required = false, dataType = "Date", value = "创建时间", name = "createDate", example = "2018-10-23 12:00:00")
+    // 页面写入数据库时格式化
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date createDate;
 
     /**
@@ -55,6 +58,8 @@ public class User {
      * 更新时间
      */
     @ApiModelProperty(position = 7, required = false, dataType = "Date", value = "更新时间", name = "updateDate", example = "2018-10-23 12:00:00")
+    // 页面写入数据库时格式化
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date updateDate;
 
     /**

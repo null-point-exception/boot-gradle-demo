@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户映射mapper.
@@ -21,6 +22,6 @@ public interface UserMapper extends BaseMapper<User> {
      * @param delFlag 删除标志
      * @return 用户列表
      */
-    List<User> selectUsers(@Param("delFlag") String delFlag);
+    List<User> selectUsers(@Param("query") Map<String,Object> query);
 
 }

@@ -1,8 +1,5 @@
 package com.practice.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.practice.entity.User;
 import com.practice.service.UserService;
@@ -12,10 +9,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户接口.
@@ -83,14 +79,14 @@ public class UserApi {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "当前页", required = true, dataType = "Integer", example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页容量", required = true, dataType = "Integer", example = "5"),
-            @ApiImplicitParam(name = "delFlag", value = "删除标志", required = true, dataType = "String", example = "0"),
+            @ApiImplicitParam(name = "query", value = "查询条件", required = true, dataType = "Map"),
     })
     @GetMapping
-    public PageInfo<User> getUsersByPage(@RequestParam(value = "pageNum", defaultValue = "1")int pageNum,
-                                      @RequestParam(value = "pageSize", defaultValue = "5")int pageSize,
-                                      @RequestParam(value = "delFlag", defaultValue = "0")String delFlag) {
+    public PageInfo<User> getUsersByPage(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+                                         @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
+                                         @RequestBody Map<String,Object> query) {
 
-        return service.selectUsersByPage(pageNum, pageSize, delFlag);
+        return service.selectUsersByPage(pageNum, pageSize, query);
     }
 
     /**

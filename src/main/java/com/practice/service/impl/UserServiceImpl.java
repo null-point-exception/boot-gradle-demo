@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户信息业务实现类
@@ -47,13 +48,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> selectUsers(String delFlag) {
-        return mapper.selectUsers(delFlag);
+    public List<User> selectUsers(Map<String,Object> query) {
+        return mapper.selectUsers(query);
     }
 
     @Override
-    public PageInfo<User> selectUsersByPage(int pageNum, int pageSize, String delFlag) {
-        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> selectUsers(delFlag));
+    public PageInfo<User> selectUsersByPage(int pageNum, int pageSize, Map<String,Object> query) {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> selectUsers(query));
     }
 
 }
