@@ -2,14 +2,14 @@ package com.practice.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.practice.bean.entity.User;
+import com.practice.bean.query.UserQuery;
 import com.practice.dao.UserMapper;
-import com.practice.entity.User;
 import com.practice.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 用户信息业务实现类
@@ -48,12 +48,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> selectUsers(Map<String,Object> query) {
+    public List<User> selectUsers(UserQuery query) {
         return mapper.selectUsers(query);
     }
 
     @Override
-    public PageInfo<User> selectUsersByPage(int pageNum, int pageSize, Map<String,Object> query) {
+    public PageInfo<User> selectUsersByPage(int pageNum, int pageSize, UserQuery query) {
         return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> selectUsers(query));
     }
 

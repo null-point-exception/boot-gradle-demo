@@ -1,10 +1,10 @@
 package com.practice.service;
 
 import com.github.pagehelper.PageInfo;
-import com.practice.entity.User;
+import com.practice.bean.entity.User;
+import com.practice.bean.query.UserQuery;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 用户信息业务层
@@ -58,13 +58,13 @@ public interface UserService {
      *
      * @return 用户列表
      */
-    List<User> selectUsers(Map<String,Object> query);
+    List<User> selectUsers(UserQuery query);
 
     /**
      * 分页查询用户列表.
      *
      * @return 分页对象
      */
-    PageInfo<User> selectUsersByPage(int pageNum, int pageSize, Map<String,Object> query);
+    PageInfo<User> selectUsersByPage(int pageNum, int pageSize, UserQuery query);
 
 }

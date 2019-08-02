@@ -1,7 +1,8 @@
 package com.practice.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.practice.entity.User;
+import com.practice.bean.entity.User;
+import com.practice.bean.query.UserQuery;
 import com.practice.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 用户接口.
@@ -71,22 +71,37 @@ public class UserApi {
     }
 
     /**
-     * 获取用户列表
+     * 分页查询用户列表
      *
      * @return 用户列表
      */
-    @ApiOperation(value = "获取用户列表", notes = "获取用户列表")
+    @ApiOperation(value = "分页查询用户列表", notes = "分页查询用户列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum", value = "当前页", required = true, dataType = "Integer", example = "1"),
-            @ApiImplicitParam(name = "pageSize", value = "页容量", required = true, dataType = "Integer", example = "5"),
-            @ApiImplicitParam(name = "query", value = "查询条件", required = true, dataType = "Map"),
+            @ApiImplicitParam(name = "pageNum", value = "当前页",  dataType = "int", example = "1"),
+            @ApiImplicitParam(name = "pageSize", value = "页容量", dataType = "int", example = "5"),
+            @ApiImplicitParam(name = "query", value = "查询条件", required = true, dataType = "UserQuery"),
     })
-    @GetMapping
-    public PageInfo<User> getUsersByPage(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-                                         @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
-                                         @RequestBody Map<String,Object> query) {
+    @PostMapping("page")
+    public PageInfo<User> getUsersByPage(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                                         @RequestParam(value = "pageSize", required = false, defaultValue = "5") int pageSize,
+                                         @RequestBody UserQuery query) {
 
         return service.selectUsersByPage(pageNum, pageSize, query);
+    }
+
+    /**
+     * 分页查询用户列表
+     *
+     * @return 用户列表
+     */
+    @ApiOperation(value = "分页查询用户列表", notes = "分页查询用户列表")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "query", value = "查询条件", required = true, dataType = "UserQuery"),
+    })
+    @PostMapping("query")
+    public List<User> getUsersByPage(@RequestBody UserQuery query) {
+
+        return service.selectUsers(query);
     }
 
     /**

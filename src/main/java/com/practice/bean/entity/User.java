@@ -1,5 +1,7 @@
-package com.practice.entity;
+package com.practice.bean.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -46,6 +48,7 @@ public class User {
     @ApiModelProperty(position = 5, required = false, dataType = "Date", value = "创建时间", name = "createDate", example = "2018-10-23 12:00:00")
     // 页面写入数据库时格式化
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @TableField(fill = FieldFill.INSERT)
     private Date createDate;
 
     /**
@@ -60,6 +63,7 @@ public class User {
     @ApiModelProperty(position = 7, required = false, dataType = "Date", value = "更新时间", name = "updateDate", example = "2018-10-23 12:00:00")
     // 页面写入数据库时格式化
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateDate;
 
     /**

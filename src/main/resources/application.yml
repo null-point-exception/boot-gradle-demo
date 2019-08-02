@@ -35,7 +35,7 @@ mybatis-plus:
   #xml扫描，多个目录用逗号或者分号分隔（告诉 Mapper 所对应的 XML 文件位置）
   mapper-locations: classpath:/mapper/*Mapper.xml
   #MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名，多个package用逗号或者分号分隔
-  type-aliases-package: com.practice.entity
+  type-aliases-package: com.practice.bean.entity
   #如果配置了该属性，则仅仅会扫描路径下以该类作为父类的域对象
   #type-aliases-super-type: java.lang.Object
   #枚举类 扫描路径，如果配置了该属性，会将路径下的枚举类进行注入，让实体类字段能够简单快捷的使用枚举属性
@@ -63,7 +63,7 @@ mybatis-plus:
       # 表名下划线命名默认true
       table-underline: true
       # 主键类型
-      id-type: ID_WORKER
+      id-type: UUID
       #是否开启大写命名，默认不开启
       #capital-mode: false
       #逻辑已删除值,(逻辑删除下有效) 需要注入逻辑策略LogicSqlInjector 以@Bean方式注入

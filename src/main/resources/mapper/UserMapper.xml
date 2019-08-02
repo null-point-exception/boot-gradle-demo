@@ -4,39 +4,52 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.practice.dao.UserMapper">
 
+    <!-- 排序sql片段 -->
+    <sql id="sortSql">
+        <if test="query.sort != null and query.sort.field != null and query.sort.field != ''">
+            ORDER BY ${query.sort.field}
+            <choose>
+                <when test="query.sort.type != null and query.sort.type.value == 'ASC'.toString()"> ASC</when>
+                <when test="query.sort.type != null and query.sort.type.value == 'DESC'.toString()"> DESC</when>
+                <otherwise> ASC</otherwise>
+            </choose>
+        </if>
+    </sql>
+
     <select id="selectUsers" resultType="User">
         SELECT * FROM user WHERE 1=1
         <if test="query != null">
             <if test="query.name != null and query.name !=''">
-                name like concat('%', #{query.name}, '%')
+                and name like concat('%', #{query.name}, '%')
             </if>
             <if test="query.password != null and query.password !=''">
-                password = #{query.password}
+                and password = #{query.password}
             </if>
             <if test="query.createBy != null and query.createBy !=''">
-                create_by = #{query.createBy}
+                and create_by = #{query.createBy}
             </if>
             <if test="query.startCreateDate != null">
-                create_date &gt;= #{query.startCreateDate}
+                and DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%S') &gt;= #{query.startCreateDate}
             </if>
             <if test="query.endCreateDate != null">
-                create_date &lt;= #{query.endCreateDate}
+                and DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%S') &lt;= #{query.endCreateDate}
             </if>
             <if test="query.updateBy != null and query.updateBy !=''">
-                update_by = #{query.updateBy}
+                and update_by = #{query.updateBy}
             </if>
             <if test="query.startUpdateDate != null">
-                update_date &gt;= #{query.startUpdateDate}
+                and DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%S') &gt;= #{query.startUpdateDate}
             </if>
             <if test="query.endUpdateDate != null">
-                update_date &lt;= #{query.endUpdateDate}
+                and DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%S') &lt;= #{query.endUpdateDate}
             </if>
             <if test="query.delFlag != null and query.delFlag == '1'.toString()">
-                del_flag = '1'
+                and del_flag = '1'
             </if>
             <if test="query.delFlag != null and query.delFlag == '0'.toString()">
-                del_flag = '0'
+                and del_flag = '0'
             </if>
+            <include refid="sortSql"></include>
         </if>
     </select>
 
