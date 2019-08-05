@@ -37,6 +37,14 @@
             <if test="query.delFlag != null and query.delFlag == '0'.toString()">
                 and del_flag = '0'
             </if>
+            <choose>
+                <when test="query.delFlag != null and query.delFlag == '1'.toString()">
+                    and del_flag = '1'
+                </when>
+                <when test="query.delFlag != null and query.delFlag == '0'.toString()">
+                    and del_flag = '0'
+                </when>
+            </choose>
             <include refid="com.practice.dao.CommonMapper.sortSql"></include>
         </if>
     </select>
