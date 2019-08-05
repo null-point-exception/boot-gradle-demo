@@ -85,7 +85,6 @@ public class UserApi {
     public PageInfo<User> getUsersByPage(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize", required = false, defaultValue = "5") int pageSize,
                                          @RequestBody UserQuery query) {
-
         return service.selectUsersByPage(pageNum, pageSize, query);
     }
 
@@ -100,7 +99,6 @@ public class UserApi {
     })
     @PostMapping("query")
     public List<User> getUsersByPage(@RequestBody UserQuery query) {
-
         return service.selectUsers(query);
     }
 

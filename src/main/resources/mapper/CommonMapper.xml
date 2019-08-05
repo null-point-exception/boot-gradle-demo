@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.practice.dao.CommonMapper">
+
+    <!-- 排序sql片段 -->
+    <sql id="sortSql">
+        <if test="query.sort != null and query.sort.field != null and query.sort.field != ''">
+            ORDER BY ${query.sort.field}
+            <choose>
+                <when test="query.sort.type != null and query.sort.type.value == 'ASC'.toString()"> ASC</when>
+                <when test="query.sort.type != null and query.sort.type.value == 'DESC'.toString()"> DESC</when>
+                <otherwise> ASC</otherwise>
+            </choose>
+        </if>
+    </sql>
+
+</mapper>

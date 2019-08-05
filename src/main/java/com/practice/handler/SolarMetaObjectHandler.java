@@ -49,8 +49,7 @@ public class SolarMetaObjectHandler implements MetaObjectHandler {
     }
 
     /**
-     * 封装更新的统一处理 * * @param metaObject MetaObject
-     * @param now Date
+     * 封装更新的统一处理
      */
     private void preUpdate(MetaObject metaObject, Date now) {
         // 强制维护时间

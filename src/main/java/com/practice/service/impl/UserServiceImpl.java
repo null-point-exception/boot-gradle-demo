@@ -6,6 +6,7 @@ import com.practice.bean.entity.User;
 import com.practice.bean.query.UserQuery;
 import com.practice.dao.UserMapper;
 import com.practice.service.UserService;
+import com.practice.util.QueryUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> selectUsers(UserQuery query) {
+        QueryUtils.setField(query.getSort(), User.class);
         return mapper.selectUsers(query);
     }
 

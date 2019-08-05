@@ -38,14 +38,14 @@ public class UserQuery {
      * 开始创建时间
      */
     @ApiModelProperty(dataType = "Date", value = "开始创建时间", name = "startCreateDate", example = "2018-10-23 10:00:00")
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startCreateDate;
 
     /**
      * 结束创建时间
      */
     @ApiModelProperty(dataType = "Date", value = "结束创建时间", name = "endCreateDate", example = "2018-10-23 12:00:00")
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endCreateDate;
 
     /**
@@ -58,14 +58,14 @@ public class UserQuery {
      * 开始更新时间
      */
     @ApiModelProperty(dataType = "Date", value = "开始更新时间", name = "startUpdateDate", example = "2018-10-23 10:00:00")
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startUpdateDate;
 
     /**
      * 结束更新时间
      */
     @ApiModelProperty(dataType = "Date", value = "结束更新时间", name = "endUpdateDate", example = "2018-10-23 12:00:00")
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endUpdateDate;
 
     /**

@@ -1,13 +1,11 @@
 package com.practice.bean.query;
 
-import com.baomidou.mybatisplus.core.enums.IEnum;
-
 /**
  * 排序枚举.
  *
  * @author kexin.ding
  */
-public enum TypeEnum implements IEnum<String> {
+public enum TypeEnum {
 
     //升序
     ASC("ASC"),
@@ -18,10 +16,5 @@ public enum TypeEnum implements IEnum<String> {
 
     TypeEnum(String value) {
         this.value = value;
-    }
-
-    @Override
-    public String getValue() {
-        return this.value;
     }
 }
