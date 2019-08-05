@@ -8,35 +8,35 @@
         SELECT * FROM user WHERE 1=1
         <if test="query != null">
             <if test="query.name != null and query.name !=''">
-                and name like concat('%', #{query.name}, '%')
+                AND name LIKE concat('%', #{query.name}, '%')
             </if>
             <if test="query.password != null and query.password !=''">
-                and password = #{query.password}
+                AND password = #{query.password}
             </if>
             <if test="query.createBy != null and query.createBy !=''">
-                and create_by = #{query.createBy}
+                AND create_by = #{query.createBy}
             </if>
             <if test="query.startCreateDate != null">
-                and DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%S') &gt;= #{query.startCreateDate}
+                AND DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%S') &gt;= #{query.startCreateDate}
             </if>
             <if test="query.endCreateDate != null">
-                and DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%S') &lt;= #{query.endCreateDate}
+                AND DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%S') &lt;= #{query.endCreateDate}
             </if>
             <if test="query.updateBy != null and query.updateBy !=''">
-                and update_by = #{query.updateBy}
+                AND update_by = #{query.updateBy}
             </if>
             <if test="query.startUpdateDate != null">
-                and DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%S') &gt;= #{query.startUpdateDate}
+                AND DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%S') &gt;= #{query.startUpdateDate}
             </if>
             <if test="query.endUpdateDate != null">
-                and DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%S') &lt;= #{query.endUpdateDate}
+                AND DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%S') &lt;= #{query.endUpdateDate}
             </if>
             <choose>
                 <when test="query.delFlag != null and query.delFlag == '1'.toString()">
-                    and del_flag = '1'
+                    AND del_flag = '1'
                 </when>
                 <when test="query.delFlag != null and query.delFlag == '0'.toString()">
-                    and del_flag = '0'
+                    AND del_flag = '0'
                 </when>
             </choose>
             <include refid="com.practice.dao.CommonMapper.sortSql"></include>
