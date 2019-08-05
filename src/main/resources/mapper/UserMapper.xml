@@ -31,12 +31,6 @@
             <if test="query.endUpdateDate != null">
                 and DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%S') &lt;= #{query.endUpdateDate}
             </if>
-            <if test="query.delFlag != null and query.delFlag == '1'.toString()">
-                and del_flag = '1'
-            </if>
-            <if test="query.delFlag != null and query.delFlag == '0'.toString()">
-                and del_flag = '0'
-            </if>
             <choose>
                 <when test="query.delFlag != null and query.delFlag == '1'.toString()">
                     and del_flag = '1'
