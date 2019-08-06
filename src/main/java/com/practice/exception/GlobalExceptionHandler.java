@@ -23,8 +23,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     Result handle(Exception e, HttpServletRequest request) {
-        LOG.error("url {}, msg {}", request.getRequestURL(), e.getMessage());
-        return Result.error(e.getMessage());
+        LOG.error("url:{}, msg:{}", request.getRequestURL(), e.getMessage());
+        return Result.fail(e.getMessage());
     }
 
 }

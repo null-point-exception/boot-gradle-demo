@@ -11,6 +11,7 @@ public class QueryUtils {
 
     /**
      * 设置排序字段
+     *
      * @param sort
      * @param clazz
      */
@@ -25,7 +26,7 @@ public class QueryUtils {
                     break;
                 }
             }
-            Assert.notNull(name, "排序字段有误");
+            Assert.notNull(name, "排序字段有误：不存在" + sort.getField() + "字段");
             sort.setField(humpToLine(name).toUpperCase());
         }
     }

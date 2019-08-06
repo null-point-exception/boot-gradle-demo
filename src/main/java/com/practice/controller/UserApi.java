@@ -1,13 +1,15 @@
 package com.practice.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.practice.base.Result;
 import com.practice.bean.entity.User;
 import com.practice.bean.query.UserQuery;
-import com.practice.service.UserService;
+import com.practice.service.impl.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -35,8 +37,13 @@ public class UserApi {
     @ApiOperation(value = "新增用户", notes = "新增用户")
     @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User")
     @PostMapping
-    public User addUser(@RequestBody User user) {
-        return service.addUser(user);
+    public Result addUser(@RequestBody User user) {
+
+        User data = service.addUser(user);
+        if (null == data) {
+            return Result.fail("新增用户失败");
+        }
+        return Result.success("新增用户成功", data);
     }
 
     /**
@@ -52,9 +59,13 @@ public class UserApi {
             @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User"),
     })
     @PutMapping("{id}")
-    public User editUser(@PathVariable("id") String id, @RequestBody User user) {
+    public Result editUser(@PathVariable("id") String id, @RequestBody User user) {
         user.setId(id);
-        return service.editUser(user);
+        User data = service.editUser(user);
+        if (null == data) {
+            return Result.fail("修改用户失败");
+        }
+        return Result.success("修改用户成功", data);
     }
 
     /**
@@ -66,8 +77,9 @@ public class UserApi {
     @ApiOperation(value = "根据用户id查询用户详情", notes = "根据用户id获取用户详情")
     @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", example = "891fa31a63ae42f186efd8fcaad65f49")
     @GetMapping("{id}")
-    public User getUserById(@PathVariable("id") String id) {
-        return service.findById(id);
+    public Result<User> getUserById(@PathVariable("id") String id) {
+        User data = service.findById(id);
+        return Result.success("根据用户id获取用户详情成功", data);
     }
 
     /**
@@ -77,33 +89,36 @@ public class UserApi {
      */
     @ApiOperation(value = "分页查询用户列表", notes = "分页查询用户列表")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum", value = "当前页",  dataType = "int", example = "1"),
+            @ApiImplicitParam(name = "pageNum", value = "当前页", dataType = "int", example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页容量", dataType = "int", example = "5"),
             @ApiImplicitParam(name = "query", value = "查询条件", required = true, dataType = "UserQuery"),
     })
     @PostMapping("page")
-    public PageInfo<User> getUsersByPage(@RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                                         @RequestParam(value = "pageSize", required = false, defaultValue = "5") int pageSize,
-                                         @RequestBody UserQuery query) {
-        return service.selectUsersByPage(pageNum, pageSize, query);
+    public Result<PageInfo<User>> getUsersByPage(
+            @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "5") int pageSize,
+            @RequestBody UserQuery query) {
+        PageInfo<User> page = service.selectUsersByPage(pageNum, pageSize, query);
+        return Result.success("分页查询用户列表成功", page);
     }
 
     /**
-     * 分页查询用户列表
+     * 条件查询用户列表
      *
      * @return 用户列表
      */
-    @ApiOperation(value = "分页查询用户列表", notes = "分页查询用户列表")
+    @ApiOperation(value = "条件查询用户列表", notes = "条件查询用户列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "query", value = "查询条件", required = true, dataType = "UserQuery"),
     })
     @PostMapping("query")
-    public List<User> getUsersByPage(@RequestBody UserQuery query) {
-        return service.selectUsers(query);
+    public Result<List<User>> getUsersByPage(@RequestBody UserQuery query) {
+        List<User> list = service.selectUsers(query);
+        return Result.success("条件查询用户列表成功", list);
     }
 
     /**
-     * 删除用户
+     * 删除用户.
      *
      * @param id 用户id
      * @return 删除结果
@@ -111,8 +126,12 @@ public class UserApi {
     @ApiOperation(value = "删除用户", notes = "删除用户")
     @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", example = "891fa31a63ae42f186efd8fcaad65f49")
     @DeleteMapping("{id}")
-    public int delUserById(@PathVariable("id") String id) {
-        return service.delUser(id);
+    public Result<String> delUserById(@PathVariable("id") String id) {
+        int n = service.delUser(id);
+        if (n == 0) {
+            return Result.fail("删除用户失败");
+        }
+        return Result.success("删除用户成功");
     }
 
     /**
@@ -123,9 +142,13 @@ public class UserApi {
      */
     @ApiOperation(value = "批量删除用户", notes = "批量删除用户")
     @ApiImplicitParam(name = "ids", value = "用户主键集合", allowMultiple = true, required = true, dataType = "String", example = "891fa31a63ae42f186efd8fcaad65f49")
-    @DeleteMapping("batch")
-    public int delUserByIds(@RequestBody List<String> ids) {
-        return service.delUsers(ids);
+    @DeleteMapping(value = "batch", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Result delUserByIds(@RequestBody List<String> ids) {
+        int n = service.delUsers(ids);
+        if (n < ids.size()) {
+            return Result.fail("删除用户失败", n);
+        }
+        return Result.success("删除用户成功");
     }
 
 }
