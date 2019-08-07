@@ -34,12 +34,12 @@ public class UserApi {
      * @param user 新增用户信息
      * @return 用户
      */
-    @ApiOperation(value = "新增用户", notes = "新增用户")
+    @ApiOperation("新增用户")
     @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User")
     @PostMapping
     public Result addUser(@RequestBody User user) {
 
-        User data = service.addUser(user);
+        User data = service.add(user);
         if (null == data) {
             return Result.fail("新增用户失败");
         }
@@ -53,7 +53,7 @@ public class UserApi {
      * @param user 修改用户信息
      * @return 用户
      */
-    @ApiOperation(value = "修改用户", notes = "修改用户")
+    @ApiOperation("修改用户")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", example = "891fa31a63ae42f186efd8fcaad65f49"),
             @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User"),
@@ -61,7 +61,7 @@ public class UserApi {
     @PutMapping("{id}")
     public Result editUser(@PathVariable("id") String id, @RequestBody User user) {
         user.setId(id);
-        User data = service.editUser(user);
+        User data = service.edit(user);
         if (null == data) {
             return Result.fail("修改用户失败");
         }
@@ -74,7 +74,7 @@ public class UserApi {
      * @param id 用户ID
      * @return 用户
      */
-    @ApiOperation(value = "根据用户id查询用户详情", notes = "根据用户id获取用户详情")
+    @ApiOperation("根据用户id查询用户详情")
     @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", example = "891fa31a63ae42f186efd8fcaad65f49")
     @GetMapping("{id}")
     public Result<User> getUserById(@PathVariable("id") String id) {
@@ -87,7 +87,7 @@ public class UserApi {
      *
      * @return 用户列表
      */
-    @ApiOperation(value = "分页查询用户列表", notes = "分页查询用户列表")
+    @ApiOperation("分页查询用户列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "pageNum", value = "当前页", dataType = "int", example = "1"),
             @ApiImplicitParam(name = "pageSize", value = "页容量", dataType = "int", example = "5"),
@@ -107,7 +107,7 @@ public class UserApi {
      *
      * @return 用户列表
      */
-    @ApiOperation(value = "条件查询用户列表", notes = "条件查询用户列表")
+    @ApiOperation("条件查询用户列表")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "query", value = "查询条件", required = true, dataType = "UserQuery"),
     })
@@ -123,11 +123,11 @@ public class UserApi {
      * @param id 用户id
      * @return 删除结果
      */
-    @ApiOperation(value = "删除用户", notes = "删除用户")
+    @ApiOperation("删除用户")
     @ApiImplicitParam(name = "id", value = "用户id", required = true, dataType = "String", example = "891fa31a63ae42f186efd8fcaad65f49")
     @DeleteMapping("{id}")
     public Result<String> delUserById(@PathVariable("id") String id) {
-        int n = service.delUser(id);
+        int n = service.delete(id);
         if (n == 0) {
             return Result.fail("删除用户失败");
         }
@@ -140,11 +140,11 @@ public class UserApi {
      * @param ids 待删除的用户id集合
      * @return 删除结果
      */
-    @ApiOperation(value = "批量删除用户", notes = "批量删除用户")
+    @ApiOperation("批量删除用户")
     @ApiImplicitParam(name = "ids", value = "用户主键集合", allowMultiple = true, required = true, dataType = "String", example = "891fa31a63ae42f186efd8fcaad65f49")
     @DeleteMapping(value = "batch", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Result delUserByIds(@RequestBody List<String> ids) {
-        int n = service.delUsers(ids);
+        int n = service.deletes(ids);
         if (n < ids.size()) {
             return Result.fail("删除用户失败", n);
         }

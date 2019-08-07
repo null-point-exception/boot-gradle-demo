@@ -77,7 +77,7 @@ public class UserQuery {
     /**
      * 排序
      */
-    @ApiModelProperty(dataType = "Sort", value = "排序", name = "sort")
+    @ApiModelProperty(position = 99, dataType = "Sort", value = "排序", name = "sort")
     private Sort sort;
 
 }

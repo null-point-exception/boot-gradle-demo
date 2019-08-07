@@ -24,19 +24,19 @@ public class BaseService<T extends BaseMapper<K>, K> {
     @Resource
     protected T mapper;
 
-    public K addUser(K entity) {
+    public K add(K entity) {
         return mapper.insert(entity) > 0 ? entity : null;
     }
 
-    public K editUser(K entity) {
+    public K edit(K entity) {
         return mapper.updateById(entity) > 0 ? entity : null;
     }
 
-    public int delUser(String id) {
+    public int delete(String id) {
         return mapper.deleteById(id);
     }
 
-    public int delUsers(List<String> ids) {
+    public int deletes(List<String> ids) {
         return mapper.deleteBatchIds(ids);
     }
 

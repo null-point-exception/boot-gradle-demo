@@ -14,7 +14,7 @@ import java.util.Date;
  *
  * @author kexin.ding
  */
-@ApiModel(value = "User", description = "路口信息实体模型")
+@ApiModel(value = "User", description = "用户信息实体模型")
 @Data
 public class User {
 

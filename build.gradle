@@ -59,6 +59,8 @@ dependencies {
     runtime "mysql:mysql-connector-java"
     // mybatis-plus
     compile "com.baomidou:mybatis-plus-boot-starter:${mybatisplusVersion}"
+    // 模板引擎
+    compile "org.freemarker:freemarker:2.3.28"
     // 分页插件
     compile "com.github.pagehelper:pagehelper-spring-boot-starter:${bootpagehelperVersion}"
     // swagger2
