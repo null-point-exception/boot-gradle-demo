@@ -38,7 +38,8 @@
     </#if>
     <#if cfg.selectAll == true || cfg.findPage == true>
         <select id="select${entity}s" resultType="${package.Entity}.${entity}">
-            SELECT * FROM ${table.name} WHERE 1=1
+            SELECT <#list table.fields as field>${field.name}<#if ((field_index + 1) < table.fields?size)>, </#if></#list> FROM ${table.name}
+            WHERE 1=1
             <if test="query != null">
                 <#list table.fields as field>
                     <#if !field.keyFlag><#--生成普通字段 -->

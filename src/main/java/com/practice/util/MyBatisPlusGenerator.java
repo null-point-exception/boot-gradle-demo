@@ -49,7 +49,7 @@ public class MyBatisPlusGenerator {
      */
     private static class Package {
         private static final String PARENT_PACKAGE = "com";
-        private static final String MODULE_NAME = "test";
+        private static final String MODULE_NAME = "practice";
         private static final String CONTROLLER_PACKAGE = "controller";
         private static final String SERVICE_PACKAGE = "service";
         private static final String SERVICE_IMPL_PACKAGE = "service.impl";
@@ -103,10 +103,10 @@ public class MyBatisPlusGenerator {
                         .setService(null)
                 // 自定义模板配置，模板可以参考源码 /mybatis-plus/src/main/resources/template 使用copy至您项目 src/main/resources/template 目录下，模板名称也可自定义如下配置：
                 // 不想生成下面哪个，放开注释设置为null即可。
-                //.setController(null)
-                //.setEntity(null)
-                //.setMapper(null)
-                //.setServiceImpl(null)
+//                .setController(null)
+//                .setEntity(null)
+//                .setMapper(null)
+//                .setServiceImpl(null)
         );
 
         /**
@@ -131,7 +131,6 @@ public class MyBatisPlusGenerator {
         fileOutList.add(new FileOutConfig("/templates/query.java.ftl") {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                System.out.println(tableInfo);
                 //tableInfo.setImportPackages("com.practice.bean.query.Sort");
                 return Path.PROJECT_PATH + "/" + Path.JAVA_PATH + packageConvertPath(mpg.getPackageInfo().getParent() + "/" + Package.QUERY_PACKAGE) + String.format(Name.QUERY, tableInfo.getEntityName()) + StringPool.DOT_JAVA;
             }

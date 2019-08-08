@@ -19,29 +19,28 @@ import java.util.List;
  * @author kexin.ding
  */
 @Transactional(propagation = Propagation.NESTED, isolation = Isolation.DEFAULT, readOnly = false, rollbackFor = Exception.class)
-public class BaseService<T extends BaseMapper<K>, K> {
+public interface BaseService<T extends BaseMapper<K>, K> {
 
-    @Resource
-    protected T mapper;
+    T getMapper();
 
-    public K add(K entity) {
-        return mapper.insert(entity) > 0 ? entity : null;
+    default K add(K entity) {
+        return getMapper().insert(entity) > 0 ? entity : null;
     }
 
-    public K edit(K entity) {
-        return mapper.updateById(entity) > 0 ? entity : null;
+    default K edit(K entity) {
+        return getMapper().updateById(entity) > 0 ? entity : null;
     }
 
-    public int delete(String id) {
-        return mapper.deleteById(id);
+    default int delete(String id) {
+        return getMapper().deleteById(id);
     }
 
-    public int deletes(List<String> ids) {
-        return mapper.deleteBatchIds(ids);
+    default int deletes(List<String> ids) {
+        return getMapper().deleteBatchIds(ids);
     }
 
-    public K findById(String id) {
-        return mapper.selectById(id);
+    default K findById(String id) {
+        return getMapper().selectById(id);
     }
 
 }

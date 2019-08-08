@@ -12,6 +12,7 @@ import com.practice.service.BaseService;
 import com.practice.util.QueryUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -20,7 +21,14 @@ import java.util.List;
  * @author kexin.ding
  */
 @Service
-public class UserService extends BaseService<UserMapper, User> {
+public class UserService implements BaseService<UserMapper, User> {
+
+    @Resource
+    private UserMapper mapper;
+    @Override
+    public UserMapper getMapper() {
+        return mapper;
+    }
 
     public List<User> selectUsers(UserQuery query) {
         QueryUtils.setField(query.getSort(), User.class);

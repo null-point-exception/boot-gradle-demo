@@ -27,6 +27,10 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
 
     @Resource
     private ${table.mapperName} mapper;
+    @Override
+    public ${table.mapperName} getMapper() {
+        return mapper;
+    }
 
 <#if cfg.findPage == true || cfg.selectAll == true>
     /**
