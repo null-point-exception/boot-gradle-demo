@@ -1,7 +1,6 @@
 package com.practice.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
@@ -24,7 +23,13 @@ import java.util.List;
 public class UserService extends BaseService<UserMapper, User> {
 
     public List<User> selectUsers(UserQuery query) {
-        /*QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        QueryUtils.setField(query.getSort(), User.class);
+        return mapper.selectUsers(query);
+    }
+
+    private List<User> selectList(UserQuery query) {
+        //单表部分简单查询
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("id", "name");
         LambdaQueryWrapper<User> lambda = queryWrapper.lambda();
         if (StrUtil.isNotBlank(query.getName())) {
@@ -36,9 +41,7 @@ public class UserService extends BaseService<UserMapper, User> {
         if (StrUtil.isNotBlank(query.getUpdateBy())) {
             lambda.or(w -> w.eq(User::getUpdateBy, query.getUpdateBy()));
         }
-        List<User> list = mapper.selectList(queryWrapper);*/
-        QueryUtils.setField(query.getSort(), User.class);
-        return mapper.selectUsers(query);
+        return mapper.selectList(queryWrapper);
     }
 
     public PageInfo<User> selectUsersByPage(int pageNum, int pageSize, UserQuery query) {
