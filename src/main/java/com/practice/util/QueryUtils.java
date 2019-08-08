@@ -1,7 +1,9 @@
 package com.practice.util;
 
+import cn.hutool.core.util.StrUtil;
 import com.practice.bean.query.Sort;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.regex.Matcher;
@@ -16,7 +18,7 @@ public class QueryUtils {
      * @param clazz
      */
     public static void setField(Sort sort, Class clazz) {
-        if (null != sort && null != sort.getField()) {
+        if (null != sort && StrUtil.isNotBlank(sort.getField())) {
             String name = null;
             //根据Class对象获得属性 私有的也可以获得
             Field[] fields = clazz.getDeclaredFields();
