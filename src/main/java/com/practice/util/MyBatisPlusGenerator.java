@@ -13,18 +13,7 @@ import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-import com.google.common.base.CaseFormat;
-import freemarker.template.Configuration;
-import freemarker.template.TemplateExceptionHandler;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import org.springframework.util.Assert;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -112,12 +101,12 @@ public class MyBatisPlusGenerator {
                 new TemplateConfig()
                         .setXml(null)
                         .setService(null)
-                        // 自定义模板配置，模板可以参考源码 /mybatis-plus/src/main/resources/template 使用copy至您项目 src/main/resources/template 目录下，模板名称也可自定义如下配置：
-                        // 不想生成下面哪个，放开注释设置为null即可。
-                        //.setController(null)
-                        //.setEntity(null)
-                        //.setMapper(null)
-                        //.setServiceImpl(null)
+                // 自定义模板配置，模板可以参考源码 /mybatis-plus/src/main/resources/template 使用copy至您项目 src/main/resources/template 目录下，模板名称也可自定义如下配置：
+                // 不想生成下面哪个，放开注释设置为null即可。
+                //.setController(null)
+                //.setEntity(null)
+                //.setMapper(null)
+                //.setServiceImpl(null)
         );
 
         /**
@@ -128,7 +117,7 @@ public class MyBatisPlusGenerator {
             @Override
             public void initMap() {
                 Map<String, Object> map = new HashMap<>();
-                map.put("queryPackage", mpg.getPackageInfo().getParent() +"." + Package.QUERY_PACKAGE);
+                map.put("queryPackage", mpg.getPackageInfo().getParent() + "." + Package.QUERY_PACKAGE);
                 map.put("querySuffix", String.format(Name.QUERY, ""));
                 //是否查询列表
                 map.put("selectAll", true);
@@ -144,7 +133,7 @@ public class MyBatisPlusGenerator {
             public String outputFile(TableInfo tableInfo) {
                 System.out.println(tableInfo);
                 //tableInfo.setImportPackages("com.practice.bean.query.Sort");
-                return Path.PROJECT_PATH + "/" + Path.JAVA_PATH + packageConvertPath(mpg.getPackageInfo().getParent() + "/"+Package.QUERY_PACKAGE)+String.format(Name.QUERY, tableInfo.getEntityName()) + StringPool.DOT_JAVA;
+                return Path.PROJECT_PATH + "/" + Path.JAVA_PATH + packageConvertPath(mpg.getPackageInfo().getParent() + "/" + Package.QUERY_PACKAGE) + String.format(Name.QUERY, tableInfo.getEntityName()) + StringPool.DOT_JAVA;
             }
         });
         fileOutList.add(new FileOutConfig("/templates/mapper.xml.ftl") {
@@ -161,28 +150,28 @@ public class MyBatisPlusGenerator {
          * 全局配置
          */
         mpg.setGlobalConfig(new GlobalConfig()
-                        //输出目录
-                        .setOutputDir(Path.PROJECT_PATH + "/" + Path.JAVA_PATH)
-                        // 是否覆盖文件
-                        .setFileOverride(true)
-                        // 开启 activeRecord 模式
-                        //.setActiveRecord(true)
-                        // XML 二级缓存
-                        .setEnableCache(false)
-                        // XML ResultMap
-                        .setBaseResultMap(false)
-                        // XML columList
-                        .setBaseColumnList(false)
-                        //生成后打开文件夹
-                        .setOpen(false)
-                        .setSwagger2(true)
-                        .setAuthor(AUTHOR)
-                        // 自定义文件命名，注意 %s 会自动填充表实体属性！
-                        .setMapperName(Name.MAPPER)
-                        //.setServiceName("%sService")
-                        .setXmlName(Name.XML)
-                        .setServiceImplName(Name.SERVICEIMPL)
-                        .setControllerName(Name.CONTROLLER)
+                //输出目录
+                .setOutputDir(Path.PROJECT_PATH + "/" + Path.JAVA_PATH)
+                // 是否覆盖文件
+                .setFileOverride(true)
+                // 开启 activeRecord 模式
+                //.setActiveRecord(true)
+                // XML 二级缓存
+                .setEnableCache(false)
+                // XML ResultMap
+                .setBaseResultMap(false)
+                // XML columList
+                .setBaseColumnList(false)
+                //生成后打开文件夹
+                .setOpen(false)
+                .setSwagger2(true)
+                .setAuthor(AUTHOR)
+                // 自定义文件命名，注意 %s 会自动填充表实体属性！
+                .setMapperName(Name.MAPPER)
+                //.setServiceName("%sService")
+                .setXmlName(Name.XML)
+                .setServiceImplName(Name.SERVICEIMPL)
+                .setControllerName(Name.CONTROLLER)
         );
 
         /**
@@ -199,9 +188,9 @@ public class MyBatisPlusGenerator {
                     @Override
                     public IColumnType processTypeConvert(GlobalConfig globalConfig, String fieldType) {
                         System.out.println("转换类型：" + fieldType);
-                         if ( fieldType.toLowerCase().contains("datetime") ) {
+                        if (fieldType.toLowerCase().contains("datetime")) {
                             return DbColumnType.DATE_SQL;
-                         }
+                        }
                         return super.processTypeConvert(globalConfig, fieldType);
                     }
                 }));

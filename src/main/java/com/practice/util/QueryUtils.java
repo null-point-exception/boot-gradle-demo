@@ -3,19 +3,20 @@ package com.practice.util;
 import cn.hutool.core.util.StrUtil;
 import com.practice.bean.query.Sort;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 查询工具类.
+ *
+ * @author kexin.ding
+ */
 public class QueryUtils {
 
     /**
      * 设置排序字段
-     *
-     * @param sort
-     * @param clazz
      */
     public static void setField(Sort sort, Class clazz) {
         if (null != sort && StrUtil.isNotBlank(sort.getField())) {
