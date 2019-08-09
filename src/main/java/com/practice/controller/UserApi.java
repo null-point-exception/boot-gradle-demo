@@ -112,7 +112,7 @@ public class UserApi {
             @ApiImplicitParam(name = "query", value = "查询条件", required = true, dataType = "UserQuery"),
     })
     @PostMapping("query")
-    public Result<List<User>> getUsersByPage(@RequestBody UserQuery query) {
+    public Result<List<User>> getUsers(@RequestBody UserQuery query) {
         List<User> list = service.selectUsers(query);
         return Result.success("条件查询用户列表成功", list);
     }

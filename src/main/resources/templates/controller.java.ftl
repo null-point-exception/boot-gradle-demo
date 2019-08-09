@@ -1,12 +1,12 @@
 package ${package.Controller};
 
-<#if cfg.findPage == true>
+<#if cfg.findPage>
 import com.github.pagehelper.PageInfo;
 </#if>
 import com.practice.base.Result;
 import ${package.ServiceImpl}.${table.serviceImplName};
 import ${package.Entity}.${entity};
-<#if cfg.findPage == true || cfg.selectAll == true>
+<#if cfg.findPage || cfg.selectAll>
 import ${cfg.queryPackage}.${entity + cfg.querySuffix};
 import java.util.List;
 </#if>
@@ -88,7 +88,7 @@ public class ${table.controllerName} {
         return Result.success("根据${table.comment!}id获取${table.comment!}详情成功", data);
     }
 
-<#if cfg.selectAll == true>
+<#if cfg.selectAll>
     /**
     * 条件查询${table.comment!}列表
     *
@@ -99,13 +99,13 @@ public class ${table.controllerName} {
     @ApiImplicitParam(name = "query", value = "查询条件", required = true, dataType = "${entity + cfg.querySuffix}"),
     })
     @PostMapping("query")
-    public Result<List<${entity}>> get${entity}sByPage(@RequestBody ${entity + cfg.querySuffix} query) {
+    public Result<List<${entity}>> get${entity}s(@RequestBody ${entity + cfg.querySuffix} query) {
     List<${entity}> list = service.select${entity}s(query);
     return Result.success("条件查询${table.comment!}列表成功", list);
     }
 </#if>
 
-<#if cfg.findPage == true>
+<#if cfg.findPage>
     /**
     * 分页查询${table.comment!}列表
     *

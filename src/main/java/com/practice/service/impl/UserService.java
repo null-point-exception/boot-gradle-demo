@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.practice.aspect.SortAop;
 import com.practice.bean.entity.User;
 import com.practice.bean.query.UserQuery;
 import com.practice.dao.UserMapper;
 import com.practice.service.BaseService;
-import com.practice.util.QueryUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -30,8 +30,8 @@ public class UserService implements BaseService<UserMapper, User> {
         return mapper;
     }
 
+    @SortAop(Class = User.class)
     public List<User> selectUsers(UserQuery query) {
-        QueryUtils.setField(query.getSort(), User.class);
         return mapper.selectUsers(query);
     }
 

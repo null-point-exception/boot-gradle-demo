@@ -75,8 +75,10 @@ public class MyBatisPlusGenerator {
     private static final String TABLE = "DEPT";
     private static final String AUTHOR = "dkx";
     private static final String URL_PREFIX = "api";
-    private static final boolean SELECTALL = false;
-    private static final boolean FINDPAGE = false;
+    private static final boolean SELECTALL = true;
+    private static final boolean FINDPAGE = true;
+    // 是否生成query.java
+    private static final boolean QUERY = SELECTALL || FINDPAGE;
     private static final TableFill[] TABLE_FILLS = {
             new TableFill("create_date", FieldFill.INSERT),
             new TableFill("update_date", FieldFill.INSERT_UPDATE),
@@ -89,10 +91,8 @@ public class MyBatisPlusGenerator {
     public static void genCode() {
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
-
         // 指定模板引擎 默认是VelocityTemplateEngine ，需要引入相关引擎依赖
         mpg.setTemplateEngine(new FreemarkerTemplateEngine() {
-
             @Override
             public void writer(Map<String, Object> objectMap, String templatePath, String outputFile) throws Exception {
                 if (templateFilePath(ConstVal.TEMPLATE_XML).equals(templatePath)) {
@@ -135,9 +135,10 @@ public class MyBatisPlusGenerator {
                 this.setMap(map);
             }
         };
+
         //自定义文件输出位置（非必须）
         List<FileOutConfig> fileOutList = new ArrayList<>();
-        if (SELECTALL || FINDPAGE) {
+        if (QUERY) {
             fileOutList.add(new FileOutConfig("/templates/query.java.ftl") {
                 @Override
                 public String outputFile(TableInfo tableInfo) {
@@ -209,7 +210,7 @@ public class MyBatisPlusGenerator {
                 .setMapper(Package.MAPPER_PACKAGE)
                 .setService(Package.SERVICE_PACKAGE)
                 .setServiceImpl(Package.SERVICE_IMPL_PACKAGE)
-//                .setXml("mapper")
+                //.setXml("mapper")
         );
 
         // 策略配置

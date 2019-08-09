@@ -1,6 +1,6 @@
 package ${package.ServiceImpl};
 
-<#if cfg.findPage == true>
+<#if cfg.findPage>
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 </#if>
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};
 import ${superServiceImplClassPackage};
-<#if cfg.findPage == true || cfg.selectAll == true>
-import com.practice.util.QueryUtils;
+<#if cfg.findPage|| cfg.selectAll>
+import com.practice.aspect.SortAop;
 import ${cfg.queryPackage}.${entity + cfg.querySuffix};
 import java.util.List;
 </#if>
@@ -32,20 +32,20 @@ public class ${table.serviceImplName} implements ${superServiceImplClass}<${tabl
         return mapper;
     }
 
-<#if cfg.findPage == true || cfg.selectAll == true>
+<#if cfg.findPage || cfg.selectAll>
     /**
     * 根据查询条件查询${table.comment!} 列表
     *
     * @param query 查询条件
     * @return ${table.comment!} 列表
     */
+    @SortAop(Class = ${entity}.class)
     public List<${entity}> select${entity}s(@Param("query") ${entity + cfg.querySuffix} query){
-        QueryUtils.setField(query.getSort(), ${entity}.class);
         return mapper.select${entity}s(query);
     }
 </#if>
 
-<#if cfg.findPage == true>
+<#if cfg.findPage>
     /**
     * 根据查询条件查询${table.comment!} 分页
     *

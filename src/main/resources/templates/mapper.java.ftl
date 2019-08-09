@@ -1,6 +1,6 @@
 package ${package.Mapper};
 
-<#if cfg.selectAll == true || cfg.findPage == true>
+<#if cfg.selectAll || cfg.findPage>
 import ${cfg.queryPackage}.${entity + cfg.querySuffix};
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -18,7 +18,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
 
-<#if cfg.selectAll == true || cfg.findPage == true>
+<#if cfg.selectAll || cfg.findPage>
     /**
     * 根据查询条件查询${table.comment!}列表
     *
