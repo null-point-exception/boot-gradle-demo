@@ -2,9 +2,9 @@ package com.practice.util;
 
 import cn.hutool.core.util.StrUtil;
 import com.practice.bean.query.Sort;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 
-import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,17 +20,8 @@ public class QueryUtils {
      */
     public static void setField(Sort sort, Class clazz) {
         if (null != sort && StrUtil.isNotBlank(sort.getField())) {
-            String name = null;
-            //根据Class对象获得属性 私有的也可以获得
-            Field[] fields = clazz.getDeclaredFields();
-            for (Field field : fields) {
-                if (sort.getField().equals(field.getName())) {
-                    name = field.getName();
-                    break;
-                }
-            }
-            Assert.notNull(name, "排序字段有误：不存在" + sort.getField() + "字段");
-            sort.setField(humpToLine(name).toUpperCase());
+            Assert.notNull(BeanUtils.getPropertyDescriptor(clazz, sort.getField()), "排序字段有误：不存在" + sort.getField() + "字段");
+            sort.setField(humpToLine(sort.getField()).toUpperCase());
         }
     }
 

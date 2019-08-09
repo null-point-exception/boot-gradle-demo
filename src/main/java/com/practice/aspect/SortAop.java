@@ -12,6 +12,8 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.PARAMETER})
 public @interface SortAop {
 
-    Class Class();
+    String name() default "query";
+
+    Class<?> typeClass();
 
 }

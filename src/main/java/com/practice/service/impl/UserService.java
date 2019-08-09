@@ -25,12 +25,13 @@ public class UserService implements BaseService<UserMapper, User> {
 
     @Resource
     private UserMapper mapper;
+
     @Override
     public UserMapper getMapper() {
         return mapper;
     }
 
-    @SortAop(Class = User.class)
+    @SortAop(typeClass = User.class)
     public List<User> selectUsers(UserQuery query) {
         return mapper.selectUsers(query);
     }

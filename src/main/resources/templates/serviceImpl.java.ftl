@@ -39,7 +39,7 @@ public class ${table.serviceImplName} implements ${superServiceImplClass}<${tabl
     * @param query 查询条件
     * @return ${table.comment!} 列表
     */
-    @SortAop(Class = ${entity}.class)
+    @SortAop(typeClass = ${entity}.class)
     public List<${entity}> select${entity}s(@Param("query") ${entity + cfg.querySuffix} query){
         return mapper.select${entity}s(query);
     }
