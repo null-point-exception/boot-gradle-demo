@@ -56,7 +56,7 @@ public class ${entity} implements Serializable {
 
 	<#if field.comment!?length gt 0>
 		<#if swagger2>
-	@ApiModelProperty(position = ${field_index}, required = false, value = "${field.comment}", dataType = "${field.propertyType}", name = "${field.propertyName}", example = "")
+	@ApiModelProperty(position = ${field_index}, required = false, value = "${field.comment}", dataType = "${field.propertyType}", name = "${field.propertyName}", example = "<#if field.propertyType=='Date'>2018-01-02 08:00:00<#elseif field.keyFlag>891fa31a63ae42f186efd8fcaad65f49</#if>")
 		<#else>
 	/**
 	* ${field.comment}

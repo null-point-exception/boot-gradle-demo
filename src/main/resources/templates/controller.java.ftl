@@ -27,7 +27,8 @@ import javax.annotation.Resource;
 */
 @Api(tags = "${table.comment!}信息接口")
 @RestController
-@RequestMapping("<#if package.ModuleName??>/${package.ModuleName}</#if>/<#if controllerMappingHyphenStyle??>${controllerMappingHyphen}<#else>${table.entityPath}</#if>")
+@RequestMapping("<#if cfg.urlPrefix??>${cfg.urlPrefix}</#if>/<#if controllerMappingHyphenStyle??>${controllerMappingHyphen}<#else>${table
+.entityPath}</#if>")
 public class ${table.controllerName} {
 
     @Resource

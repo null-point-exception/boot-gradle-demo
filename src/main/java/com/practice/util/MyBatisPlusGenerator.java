@@ -6,12 +6,11 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
-import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.po.TableFill;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
-import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
-import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.baomidou.mybatisplus.generator.engine.AbstractTemplateEngine;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 
 import java.util.*;
@@ -75,6 +74,9 @@ public class MyBatisPlusGenerator {
      */
     private static final String TABLE = "DEPT";
     private static final String AUTHOR = "dkx";
+    private static final String URL_PREFIX = "api";
+    private static final boolean SELECTALL = false;
+    private static final boolean FINDPAGE = false;
     private static final TableFill[] TABLE_FILLS = {
             new TableFill("create_date", FieldFill.INSERT),
             new TableFill("update_date", FieldFill.INSERT_UPDATE),
@@ -88,30 +90,35 @@ public class MyBatisPlusGenerator {
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
 
-        /**
-         * 指定模板引擎 默认是VelocityTemplateEngine ，需要引入相关引擎依赖
-         */
-        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+        // 指定模板引擎 默认是VelocityTemplateEngine ，需要引入相关引擎依赖
+        mpg.setTemplateEngine(new FreemarkerTemplateEngine() {
 
-        /**
-         * 模板配置
-         */
+            @Override
+            public void writer(Map<String, Object> objectMap, String templatePath, String outputFile) throws Exception {
+                if (templateFilePath(ConstVal.TEMPLATE_XML).equals(templatePath)) {
+                    outputFile = Path.PROJECT_PATH + "/" + Path.MAPPER_PATH + "/" + outputFile.replaceAll("^.+[/\\\\]", "");
+                }
+                super.writer(objectMap, templatePath, outputFile);
+            }
+            @Override
+            public AbstractTemplateEngine mkdirs() {
+                getConfigBuilder().getPathInfo().remove("xml_path");
+                return super.mkdirs();
+            }
+        });
+
+        // 模板配置
         mpg.setTemplate(
-                // 关闭默认 xml 生成，调整生成 至 根目录
                 new TemplateConfig()
-                        .setXml(null)
                         .setService(null)
-                // 自定义模板配置，模板可以参考源码 /mybatis-plus/src/main/resources/template 使用copy至您项目 src/main/resources/template 目录下，模板名称也可自定义如下配置：
-                // 不想生成下面哪个，放开注释设置为null即可。
-//                .setController(null)
-//                .setEntity(null)
-//                .setMapper(null)
-//                .setServiceImpl(null)
+                        // 自定义模板配置，模板可以参考源码 /mybatis-plus/src/main/resources/templates 使用copy至您项目 src/main/resources/templates 目录下，模板名称也可自定义如下配置：
+                        // 不想生成下面哪个，放开注释设置为null即可。
+                        .setController(null)
+                        .setServiceImpl(null)
+                        //.setMapper(null).setXml(null)
+                        .setEntity(null)
         );
 
-        /**
-         * 注入自定义配置
-         */
         // 注入自定义配置，可以在模板中使用cfg.queryPackage 设置的值
         InjectionConfig ic = new InjectionConfig() {
             @Override
@@ -120,34 +127,29 @@ public class MyBatisPlusGenerator {
                 map.put("queryPackage", mpg.getPackageInfo().getParent() + "." + Package.QUERY_PACKAGE);
                 map.put("querySuffix", String.format(Name.QUERY, ""));
                 //是否查询列表
-                map.put("selectAll", true);
+                map.put("selectAll", SELECTALL);
                 //是否分页查询
-                map.put("findPage", true);
+                map.put("findPage", FINDPAGE);
+                //api前缀
+                map.put("urlPrefix", URL_PREFIX);
                 this.setMap(map);
             }
         };
         //自定义文件输出位置（非必须）
         List<FileOutConfig> fileOutList = new ArrayList<>();
-        fileOutList.add(new FileOutConfig("/templates/query.java.ftl") {
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                //tableInfo.setImportPackages("com.practice.bean.query.Sort");
-                return Path.PROJECT_PATH + "/" + Path.JAVA_PATH + packageConvertPath(mpg.getPackageInfo().getParent() + "/" + Package.QUERY_PACKAGE) + String.format(Name.QUERY, tableInfo.getEntityName()) + StringPool.DOT_JAVA;
-            }
-        });
-        fileOutList.add(new FileOutConfig("/templates/mapper.xml.ftl") {
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                tableInfo.setName(TABLE);
-                return Path.PROJECT_PATH + "/" + Path.MAPPER_PATH + "/" + tableInfo.getMapperName() + StringPool.DOT_XML;
-            }
-        });
+        if (SELECTALL || FINDPAGE) {
+            fileOutList.add(new FileOutConfig("/templates/query.java.ftl") {
+                @Override
+                public String outputFile(TableInfo tableInfo) {
+                    tableInfo.setImportPackages("com.practice.bean.query.Sort");
+                    return Path.PROJECT_PATH + "/" + Path.JAVA_PATH + packageConvertPath(mpg.getPackageInfo().getParent() + "/" + Package.QUERY_PACKAGE) + String.format(Name.QUERY, tableInfo.getEntityName()) + StringPool.DOT_JAVA;
+                }
+            });
+        }
         ic.setFileOutConfigList(fileOutList);
         mpg.setCfg(ic);
 
-        /**
-         * 全局配置
-         */
+        // 全局配置
         mpg.setGlobalConfig(new GlobalConfig()
                 //输出目录
                 .setOutputDir(Path.PROJECT_PATH + "/" + Path.JAVA_PATH)
@@ -161,6 +163,8 @@ public class MyBatisPlusGenerator {
                 .setBaseResultMap(false)
                 // XML columList
                 .setBaseColumnList(false)
+                // 数据库时间类型 到 实体类时间类型 对应策略
+                .setDateType(DateType.ONLY_DATE)
                 //生成后打开文件夹
                 .setOpen(false)
                 .setSwagger2(true)
@@ -173,16 +177,14 @@ public class MyBatisPlusGenerator {
                 .setControllerName(Name.CONTROLLER)
         );
 
-        /**
-         * 数据库配置
-         */
+        // 数据库配置
         mpg.setDataSource(new DataSourceConfig()
-                .setDbType(Jdbc.DB_TYPE)
-                .setDriverName(Jdbc.DIVER_CLASS_NAME)
-                .setUrl(Jdbc.URL)
-                .setUsername(Jdbc.USERNAME)
-                .setPassword(Jdbc.PASSWORD)
-                .setTypeConvert(new MySqlTypeConvert() {
+                        .setDbType(Jdbc.DB_TYPE)
+                        .setDriverName(Jdbc.DIVER_CLASS_NAME)
+                        .setUrl(Jdbc.URL)
+                        .setUsername(Jdbc.USERNAME)
+                        .setPassword(Jdbc.PASSWORD)
+                /*.setTypeConvert(new MySqlTypeConvert() {
                     // 自定义数据库表字段类型转换【可选】
                     @Override
                     public IColumnType processTypeConvert(GlobalConfig globalConfig, String fieldType) {
@@ -192,11 +194,10 @@ public class MyBatisPlusGenerator {
                         }
                         return super.processTypeConvert(globalConfig, fieldType);
                     }
-                }));
+                })*/
+        );
 
-        /**
-         * 包配置
-         */
+        // 包配置
         mpg.setPackageInfo(new PackageConfig()
                 //模块名
                 .setModuleName(Package.MODULE_NAME)
@@ -206,14 +207,12 @@ public class MyBatisPlusGenerator {
                 .setController(Package.CONTROLLER_PACKAGE)
                 .setEntity(Package.ENTITY_PACKAGE)
                 .setMapper(Package.MAPPER_PACKAGE)
-                .setService("service")
+                .setService(Package.SERVICE_PACKAGE)
                 .setServiceImpl(Package.SERVICE_IMPL_PACKAGE)
-                .setXml("mapper")
+//                .setXml("mapper")
         );
 
-        /**
-         * 策略配置
-         */
+        // 策略配置
         mpg.setStrategy(new StrategyConfig()
                 // 全局大写命名
                 // .setCapitalMode(true)
@@ -252,7 +251,7 @@ public class MyBatisPlusGenerator {
                 // .setEntityBooleanColumnRemoveIsPrefix(true)
                 //.setLogicDeleteFieldName("is_delete")
                 .setRestControllerStyle(true)
-                .setControllerMappingHyphenStyle(false)
+                .setControllerMappingHyphenStyle(true)
         );
 
         // 执行生成

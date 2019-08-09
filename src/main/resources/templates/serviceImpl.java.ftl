@@ -23,7 +23,7 @@ import javax.annotation.Resource;
  * @since ${date}
  */
 @Service
-public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> {
+public class ${table.serviceImplName} implements ${superServiceImplClass}<${table.mapperName}, ${entity}> {
 
     @Resource
     private ${table.mapperName} mapper;

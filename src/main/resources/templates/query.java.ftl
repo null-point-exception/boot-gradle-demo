@@ -3,7 +3,6 @@ package ${cfg.queryPackage};
 <#list table.importPackages as pkg>
 import ${pkg};
 </#list>
-import com.practice.bean.query.Sort;
 <#if swagger2>
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -35,8 +34,10 @@ public class ${entity + cfg.querySuffix} implements Serializable {
 <#-- ----------  BEGIN 字段循环遍历  ---------->
 <#list table.fields as field>
 	<#if field.comment!?length gt 0>
+		<#if field.keyFlag><#continue></#if>
+		<#--生成普通字段 -->
 		<#if swagger2>
-	@ApiModelProperty(position = ${field_index}, required = false, value = "${field.comment}", dataType = "${field.propertyType}", name = "${field.propertyName}", example = "")
+	@ApiModelProperty(position = ${field_index}, required = false, value = "${field.comment}", dataType = "${field.propertyType}", name = "${field.propertyName}", example = "<#if field.propertyType=='Date'>2018-01-02 08:00:00</#if>")
 		<#else>
 	/**
 	* ${field.comment}
