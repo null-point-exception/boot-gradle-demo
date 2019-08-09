@@ -10,6 +10,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -47,7 +48,7 @@ public class SortAspect {
                     break;
                 }
             }
-            assert idx > -1;
+            Assert.isTrue(idx > -1, "SortAop的name错误");
             // 通过属性获取对象的属性
             Field field = args[idx].getClass().getDeclaredField("sort");
             // 对象的属性的访问权限设置为可访问
