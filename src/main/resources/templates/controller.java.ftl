@@ -95,9 +95,7 @@ public class ${table.controllerName} {
     * @return ${table.comment!}列表
     */
     @ApiOperation("条件查询${table.comment!}列表")
-    @ApiImplicitParams({
-    @ApiImplicitParam(name = "query", value = "查询条件", required = true, dataType = "${entity + cfg.querySuffix}"),
-    })
+    @ApiImplicitParam(name = "query", value = "查询条件", required = true, dataType = "${entity + cfg.querySuffix}")
     @PostMapping("query")
     public Result<List<${entity}>> get${entity}s(@RequestBody ${entity + cfg.querySuffix} query) {
     List<${entity}> list = service.select${entity}s(query);

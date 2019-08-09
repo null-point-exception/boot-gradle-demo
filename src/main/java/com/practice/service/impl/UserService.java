@@ -10,6 +10,7 @@ import com.practice.bean.entity.User;
 import com.practice.bean.query.UserQuery;
 import com.practice.dao.UserMapper;
 import com.practice.service.BaseService;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -32,7 +33,7 @@ public class UserService implements BaseService<UserMapper, User> {
     }
 
     @SortAop(typeClass = User.class)
-    public List<User> selectUsers(UserQuery query) {
+    public List<User> selectUsers(@Nullable UserQuery query) {
         return mapper.selectUsers(query);
     }
 
@@ -53,7 +54,7 @@ public class UserService implements BaseService<UserMapper, User> {
         return mapper.selectList(queryWrapper);
     }
 
-    public PageInfo<User> selectUsersByPage(int pageNum, int pageSize, UserQuery query) {
+    public PageInfo<User> selectUsersByPage(int pageNum, int pageSize, @Nullable UserQuery query) {
         return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> selectUsers(query));
     }
 

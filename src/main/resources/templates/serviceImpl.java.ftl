@@ -12,6 +12,7 @@ import ${superServiceImplClassPackage};
 <#if cfg.findPage|| cfg.selectAll>
 import com.practice.aspect.SortAop;
 import ${cfg.queryPackage}.${entity + cfg.querySuffix};
+import org.springframework.lang.Nullable;
 import java.util.List;
 </#if>
 import javax.annotation.Resource;
@@ -40,7 +41,7 @@ public class ${table.serviceImplName} implements ${superServiceImplClass}<${tabl
     * @return ${table.comment!} 列表
     */
     @SortAop(typeClass = ${entity}.class)
-    public List<${entity}> select${entity}s(@Param("query") ${entity + cfg.querySuffix} query){
+    public List<${entity}> select${entity}s(@Nullable ${entity + cfg.querySuffix} query){
         return mapper.select${entity}s(query);
     }
 </#if>
@@ -52,7 +53,7 @@ public class ${table.serviceImplName} implements ${superServiceImplClass}<${tabl
     * @param query 查询条件
     * @return ${table.comment!} 分页
     */
-    public PageInfo<${entity}> select${entity}sByPage(int pageNum, int pageSize, ${entity + cfg.querySuffix} query) {
+    public PageInfo<${entity}> select${entity}sByPage(int pageNum, int pageSize, @Nullable ${entity + cfg.querySuffix} query) {
         return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> select${entity}s(query));
     }
 </#if>

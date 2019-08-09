@@ -108,9 +108,7 @@ public class UserApi {
      * @return 用户列表
      */
     @ApiOperation("条件查询用户列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "query", value = "查询条件", required = true, dataType = "UserQuery"),
-    })
+    @ApiImplicitParam(name = "query", value = "查询条件", required = true, dataType = "UserQuery")
     @PostMapping("query")
     public Result<List<User>> getUsers(@RequestBody UserQuery query) {
         List<User> list = service.selectUsers(query);
