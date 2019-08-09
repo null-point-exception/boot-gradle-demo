@@ -25,7 +25,6 @@ buildscript {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${bootgradleVersion}"
     }
 }
-
 plugins {
     id 'java'
     id 'org.springframework.boot' version "2.1.3.RELEASE"
@@ -62,10 +61,6 @@ dependencies {
     runtime "mysql:mysql-connector-java"
     // mybatis-plus
     compile "com.baomidou:mybatis-plus-boot-starter:${mybatisplusVersion}"
-    // 代码生成配置(用于根据ftl自动生成对应的文件)
-    compile "com.baomidou:mybatis-plus-generator:${mybatisplusGenerateVersion}"
-    // 模板引擎(freemarker，和上面mybatis-plus-generator配合使用)
-    compile "org.freemarker:freemarker:${freemarkerVersion}"
     // 分页插件
     compile "com.github.pagehelper:pagehelper-spring-boot-starter:${bootpagehelperVersion}"
     // swagger2
@@ -76,6 +71,11 @@ dependencies {
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     compile "cn.hutool:hutool-core:${hutoolVersion}"
     compile "org.springframework.boot:spring-boot-starter-aop"
+
+    // 代码生成配置(用于根据ftl自动生成对应的文件)
+    compile "com.baomidou:mybatis-plus-generator:${mybatisplusGenerateVersion}"
+    // 模板引擎(freemarker，和上面mybatis-plus-generator配合使用)
+    compile "org.freemarker:freemarker:${freemarkerVersion}"
 
     testCompile "org.springframework.boot:spring-boot-starter-test"
     testCompile "junit:junit:${junitVersion}"
