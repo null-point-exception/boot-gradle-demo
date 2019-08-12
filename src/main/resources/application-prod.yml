@@ -1,6 +1,10 @@
 server:
   port: 8080
 
+swagger:
+  # 部署时间yyyy-MM-dd HH:mm:ss
+  publishDate: false
+
 spring:
   # 数据源
   datasource:
