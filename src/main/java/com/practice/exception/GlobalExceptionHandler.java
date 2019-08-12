@@ -1,6 +1,7 @@
 package com.practice.exception;
 
 import com.practice.base.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,9 +15,8 @@ import javax.servlet.http.HttpServletRequest;
  * @author kexin.ding
  */
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
-
-    private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
      * 捕获全局异常,处理所有不可知的异常
@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     Result handle(Exception e, HttpServletRequest request) {
         e.printStackTrace();
-        LOG.error("url:{}, msg:{}", request.getRequestURL(), e.getMessage());
+        log.error("url:{}, msg:{}", request.getRequestURL(), e.getMessage());
         return Result.fail(e.getMessage());
     }
 

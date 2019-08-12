@@ -18,7 +18,6 @@ import java.io.IOException;
 @RestController
 @RequestMapping
 @SpringBootApplication
-@EnableSwagger2
 public class Application {
 
     @GetMapping

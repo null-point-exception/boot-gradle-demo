@@ -1,9 +1,8 @@
 package com.practice.handler;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 
@@ -12,9 +11,9 @@ import java.util.Date;
  *
  * @author kexin.ding
  */
+@Slf4j
 public class SolarMetaObjectHandler implements MetaObjectHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SolarMetaObjectHandler.class);
     private static final String CREATE_TIME = "createDate";
     private static final String UPDATE_TIME = "updateDate";
 
@@ -23,7 +22,7 @@ public class SolarMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void insertFill(MetaObject metaObject) {
-        LOGGER.info("start insert fill ....");
+        log.info("start insert fill ....");
         Date now = new Date();
         Object createTimeObj = this.getFieldValByName(CREATE_TIME, metaObject);
         if (null == createTimeObj) {
@@ -40,7 +39,7 @@ public class SolarMetaObjectHandler implements MetaObjectHandler {
      */
     @Override
     public void updateFill(MetaObject metaObject) {
-        LOGGER.info("start update fill ....");
+        log.info("start update fill ....");
         Date now = new Date();
         Object updateTimeObj = this.getFieldValByName(UPDATE_TIME, metaObject);
         if (null == updateTimeObj) {

@@ -59,18 +59,15 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     runtime "mysql:mysql-connector-java"
-    // mybatis-plus
     compile "com.baomidou:mybatis-plus-boot-starter:${mybatisplusVersion}"
-    // 分页插件
     compile "com.github.pagehelper:pagehelper-spring-boot-starter:${bootpagehelperVersion}"
-    // swagger2
     compile "io.springfox:springfox-swagger2:${swagger2Version}"
     compile "io.springfox:springfox-swagger-ui:${swagger2Version}"
-    // 定义lombok依赖
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     compile "cn.hutool:hutool-core:${hutoolVersion}"
     compile "org.springframework.boot:spring-boot-starter-aop"
+    compile "org.springframework.boot:spring-boot-starter-logging"
 
     // 代码生成配置(用于根据ftl自动生成对应的文件)
     compile "com.baomidou:mybatis-plus-generator:${mybatisplusGenerateVersion}"

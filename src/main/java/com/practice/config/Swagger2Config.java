@@ -3,9 +3,11 @@ package com.practice.config;
 import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -29,11 +31,10 @@ import java.util.Date;
 @Setter
 @Configuration
 @EnableSwagger2
+@ConditionalOnProperty(name = "swagger.enable", havingValue = "true")
 @ConfigurationProperties(prefix = "swagger")
 public class Swagger2Config {
 
-    private String enable;
-    private String basePackage;
     private String title;
     private String description;
     private String termsOfServiceUrl;
@@ -52,7 +53,7 @@ public class Swagger2Config {
     }
 
     private Docket docket(String groupName, String pathRegex) {
-        return Boolean.parseBoolean(this.enable) ? new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
+        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
                 .directModelSubstitute(LocalDate.class, String.class).genericModelSubstitutes(ResponseEntity.class)
                 .useDefaultResponseMessages(false)
                 //.globalResponseMessage(RequestMethod.POST, customerResponseMessage())
@@ -60,11 +61,11 @@ public class Swagger2Config {
                 .forCodeGeneration(true)
                 .groupName(groupName)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage(basePackage))
+                .apis(RequestHandlerSelectors.basePackage("com.practice.controller"))
                 .paths(PathSelectors.regex(pathRegex))
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .build()
-                .apiInfo(apiInfo()) : null;
+                .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
