@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="lib/vue-2.6.10.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"> </script>
+</head>
+<body>
+<div id="root">
+    <p v-for="user in users">{{ user }}</p>
+</div>
+<script th:inline="javascript">
+    new Vue({
+        el: '#root',
+        data: {
+            users: []
+        },
+        mounted:function () {
+            this.init();
+        },
+        methods:{
+            init:function () {
+                var _this = this;
+                let url = '/api/user/query';
+                let data = {};
+                axios.post(url, data).then(res =>{
+                    var result = res.data;
+                    if (result.code == 0) {
+                        _this.users = result.data || [];
+                    }
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>

@@ -68,6 +68,8 @@ dependencies {
     compile "cn.hutool:hutool-core:${hutoolVersion}"
     compile "org.springframework.boot:spring-boot-starter-aop"
     compile "org.springframework.boot:spring-boot-starter-logging"
+    compile "org.springframework.boot:spring-boot-starter-thymeleaf"
+    compile "net.sourceforge.nekohtml:nekohtml:1.9.22"
 
     // 代码生成配置(用于根据ftl自动生成对应的文件)
     compile "com.baomidou:mybatis-plus-generator:${mybatisplusGenerateVersion}"

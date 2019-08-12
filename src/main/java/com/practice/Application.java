@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -20,7 +19,7 @@ import java.io.IOException;
 @SpringBootApplication
 public class Application {
 
-    @GetMapping
+    @GetMapping("doc")
     void index(HttpServletResponse response) throws IOException {
         response.sendRedirect("swagger-ui.html");
     }

@@ -1,3 +1,6 @@
 spring:
   application:
     name: demo
+
+logging:
+  config: classpath:logback-spring.xml
