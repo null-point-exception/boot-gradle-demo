@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <script src="lib/vue-2.6.10.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"> </script>
 </head>
@@ -14,10 +13,7 @@
     new Vue({
         el: '#root',
         data: {
-            users: []
-        },
-        mounted:function () {
-            this.init();
+            users: [],
         },
         methods:{
             init:function () {
@@ -31,6 +27,12 @@
                     }
                 });
             }
+        },
+        beforeCreate() {
+            document.title =  [[${title}]];;
+        },
+        mounted:function () {
+            this.init();
         }
     });
 </script>
