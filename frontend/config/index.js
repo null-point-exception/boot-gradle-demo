@@ -4,18 +4,22 @@
 
 const path = require('path')
 
+//assetsRoot 将webpack构建的资源输出至build/resources/main/frontend目录，gradle打包会将frontend加入至classpath中，spring查找静态资源有frontend目录区分比较方便。
+var assetsRoot = path.resolve(__dirname, '../build/resources/main/frontend')
 module.exports = {
   dev: {
-
     // Paths
-    assetsSubDirectory: 'static',
+    assetsSubDirectory: 'assets',
     assetsPublicPath: '/',
-    proxyTable: {},
+    // 代理配置将/api/** URL下的所有请求转发至服务后端即springboot启动的服务
+    proxyTable: {
+      '/api/**': 'http://localhost:8080'
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 9981, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: false,
+    autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
@@ -33,16 +37,16 @@ module.exports = {
     // https://vue-loader.vuejs.org/en/options.html#cachebusting
     cacheBusting: true,
 
-    cssSourceMap: true
+    cssSourceMap: false
   },
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve(assetsRoot, 'index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static',
+    assetsRoot: assetsRoot,
+    assetsSubDirectory: 'assets',
     assetsPublicPath: '/',
 
     /**
@@ -53,8 +57,8 @@ module.exports = {
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
 
-    // Gzip off by default as many popular static hosts such as
-    // Surge or Netlify already gzip all static assets for you.
+    // Gzip off by default as many popular frontend hosts such as
+    // Surge or Netlify already gzip all frontend assets for you.
     // Before setting to `true`, make sure to:
     // npm install --save-dev compression-webpack-plugin
     productionGzip: false,

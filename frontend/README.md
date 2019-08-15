@@ -1,6 +1,10 @@
 # frontend
 
 > A frontend project based on vue.js
+![vue-2.5.2](https://img.shields.io/badge/vue-2.5.2-brightgreen.svg?style=plastic)
+![vue-router-3.0.1](https://img.shields.io/badge/vue-router-3.0.1-brightgreen.svg?style=plastic)
+![element-ui-2.11.1](https://img.shields.io/badge/element-ui-2.11.1-brightgreen.svg?style=plastic)
+![axios-0.19.0](https://img.shields.io/badge/axios-0.19.0-brightgreen.svg?style=plastic)
 
 ## Build Setup
 
@@ -23,9 +27,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 ### 目录结构
 ```
-├── build（改名build-scripts） 项目构建(webpack)相关代码
-├── config (Webpack) 配置目录，包括端口号等
-├── node_modules	npm加载的项目依赖模块
+├── build (改名build-scripts) 项目构建(webpack)相关代码
+├── config (Webpack)  配置目录，包括端口号等
+├── node_modules  npm加载的项目依赖模块
 ├── src 这里是我们要开发的目录，基本上要做的事情都在这个目录里
 │     ├── assets 放置一些图片，如logo等
 │     ├── api
@@ -49,3 +53,8 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ├── index.html 首页入口文件，你可以添加一些 meta 信息或统计代码啥的
 └── .xxxx 这些是一些配置文件，包括语法配置，git配置等
 ```
+
+
+### 插件
+ - 引入axios `cnpm i axios -S`
+ - 引入element-ui组件库 `cnpm i element-ui -S`

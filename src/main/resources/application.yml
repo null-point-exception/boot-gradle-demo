@@ -13,15 +13,7 @@ spring:
       write-dates-as-timestamps: false
   # 所有的访问都经过静态资源路径；
   resources:
-    static-locations: classpath:/statics/
-  # thymeleaf
-  thymeleaf:
-    # 模板的模式，支持 HTML, XML TEXT JAVASCRIPT
-    mode: LEGACYHTML5
-    # 开发模式为false，避免重启服务器
-    cache: false
-    # 配置模板路径，默认是templates
-    prefix: classpath:/statics/
+    static-locations: classpath:/frontend/
 
 swagger:
   # 部署时间yyyy-MM-dd HH:mm:ss
