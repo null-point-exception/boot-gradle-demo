@@ -50,6 +50,8 @@
 ```
 
  - 在后端(src)的配置文件application.yml中配置静态访问资源的位置：
- `spring.resources.static-locations: classpath:/frontend/`
+ ```yml
+ spring.resources.static-locations: classpath:/frontend/
+ ```
  
  - 执行gradle的build命令打包即可
