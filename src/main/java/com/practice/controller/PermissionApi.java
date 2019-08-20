@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 * @author dkx
 * @since 2019-08-15
 */
-@Api(tags = "A03 权限信息接口")
+@Api(tags = "B03 权限信息接口")
 @RestController
 @RequestMapping("api/permission")
 public class PermissionApi {

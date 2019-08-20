@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author kexin.ding
  */
-@Api(tags = "A01 用户信息接口")
+@Api(tags = "B01 用户信息接口")
 @RestController
 @RequestMapping("api/user")
 public class UserApi {

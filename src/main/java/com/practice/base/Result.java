@@ -2,13 +2,15 @@ package com.practice.base;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 结果封装
  *
  * @author kexin.ding
  */
 @Data
-public class Result<T> {
+public class Result<T> implements Serializable {
 
     private int code;
     private String message;

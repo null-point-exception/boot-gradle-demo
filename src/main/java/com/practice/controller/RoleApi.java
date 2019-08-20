@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 * @author dkx
 * @since 2019-08-15
 */
-@Api(tags = "A02 角色信息接口")
+@Api(tags = "B02 角色信息接口")
 @RestController
 @RequestMapping("api/role")
 public class RoleApi {
