@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.practice.dao.PermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.practice.bean.entity.Permission">
+        <id column="id" property="id"/>
+        <result column="permission" property="permission"/>
+        <result column="role_id" property="roleId"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <!-- 多对一查询映射结果 -->
+    <resultMap id="ManyToOneResultMap" type="com.practice.bean.entity.Permission" extends="BaseResultMap">
+        <association property="role" columnPrefix="r_" resultMap="com.practice.dao.RoleMapper.BaseResultMap"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        SELECT
+        t.id
+        ,t.permission
+        ,t.role_id
+        ,t.create_by
+        ,t.create_date
+        ,t.update_by
+        ,t.update_date
+        ,r.id r_id
+        ,r.user_id r_user_id
+        ,r.create_by r_create_by
+        ,r.create_date r_create_date
+        ,r.update_by r_update_by
+        ,r.update_date r_update_date
+        FROM permission t
+        LEFT JOIN role r ON t.role_id=r.id
+    </sql>
+
+    <select id="selectById" resultMap="ManyToOneResultMap">
+        <include refid="Base_Column_List"/> WHERE t.id=#{id}
+    </select>
+
+    <select id="selectPermissions" resultMap="ManyToOneResultMap">
+        <include refid="Base_Column_List"/> WHERE 1=1
+        <if test="query != null">
+            <if test="query.permission != null and query.permission !=''">
+                AND t.permission = #{query.permission}
+            </if>
+            <if test="query.roleId != null and query.roleId !=''">
+                AND t.role_id = #{query.roleId}
+            </if>
+            <if test="query.createBy != null and query.createBy !=''">
+                AND t.create_by = #{query.createBy}
+            </if>
+            <if test="query.createDate != null and query.createDate !=''">
+                AND t.create_date = #{query.createDate}
+            </if>
+            <if test="query.updateBy != null and query.updateBy !=''">
+                AND t.update_by = #{query.updateBy}
+            </if>
+            <if test="query.updateDate != null and query.updateDate !=''">
+                AND t.update_date = #{query.updateDate}
+            </if>
+            <include refid="com.practice.dao.CommonMapper.sortSql"/>
+        </if>
+    </select>
+</mapper>

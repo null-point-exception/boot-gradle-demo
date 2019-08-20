@@ -11,6 +11,10 @@ spring:
     serialization:
       # 不返回时间戳，如果为 true 返回时间戳，如果这三行同时存在，以第3行为准即返回时间戳
       write-dates-as-timestamps: false
+  http:
+    encoding:
+      charset: utf-8
+      enabled: true
   # 所有的访问都经过静态资源路径；
   resources:
     static-locations: classpath:/frontend/

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.practice.dao.RoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.practice.bean.entity.Role">
+        <id column="id" property="id"/>
+        <result column="role_name" property="roleName"/>
+        <result column="user_id" property="userId"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <!-- 多对一查询映射结果 -->
+    <resultMap id="ManyToOneResultMap" type="com.practice.bean.entity.Role" extends="BaseResultMap">
+        <association property="user" columnPrefix="u_" resultMap="com.practice.dao.UserMapper.BaseResultMap"/>
+    </resultMap>
+
+    <!-- 一对多查询映射结果 -->
+    <resultMap id="OneToManyResultMap" type="com.practice.bean.entity.Role" extends="ManyToOneResultMap">
+        <collection property="permissions" columnPrefix="p_" resultMap="com.practice.dao.PermissionMapper.BaseResultMap"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        SELECT
+        t.id
+        ,t.role_name
+        ,t.user_id
+        ,t.create_by
+        ,t.create_date
+        ,t.update_by
+        ,t.update_date
+        ,u.id u_id
+        ,u.name u_name
+        ,u.password u_password
+        ,u.salt
+        ,u.create_by u_create_by
+        ,u.create_date u_create_date
+        ,u.update_by u_update_by
+        ,u.update_date u_update_date
+        ,u.del_flag u_del_flag
+        ,p.id p_id
+        ,p.permission p_permission
+        ,p.role_id p_role_id
+        ,p.create_by p_create_by
+        ,p.create_date p_create_date
+        ,p.update_by p_update_by
+        ,p.update_date p_update_date
+        FROM role t
+        LEFT JOIN user u ON t.user_id=u.id
+        LEFT JOIN permission p ON t.id=p.role_id
+    </sql>
+
+    <select id="selectById" resultMap="OneToManyResultMap">
+        <include refid="Base_Column_List"/>
+        WHERE t.id=#{id}
+    </select>
+
+    <select id="selectRoles" resultMap="OneToManyResultMap">
+        <include refid="Base_Column_List"/>
+        WHERE 1=1
+        <if test="query != null">
+            <if test="query.roleName != null and query.roleName !=''">
+                AND t.role_name = #{query.roleName}
+            </if>
+            <if test="query.userId != null and query.userId !=''">
+                AND t.user_id = #{query.userId}
+            </if>
+            <if test="query.createBy != null and query.createBy !=''">
+                AND t.create_by = #{query.createBy}
+            </if>
+            <if test="query.createDate != null and query.createDate !=''">
+                AND t.create_date = #{query.createDate}
+            </if>
+            <if test="query.updateBy != null and query.updateBy !=''">
+                AND t.update_by = #{query.updateBy}
+            </if>
+            <if test="query.updateDate != null and query.updateDate !=''">
+                AND t.update_date = #{query.updateDate}
+            </if>
+            <include refid="com.practice.dao.CommonMapper.sortSql"/>
+        </if>
+    </select>
+</mapper>

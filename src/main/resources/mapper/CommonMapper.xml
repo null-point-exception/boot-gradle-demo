@@ -7,7 +7,7 @@
     <!-- 排序sql片段 -->
     <sql id="sortSql">
         <if test="query.sort != null and query.sort.field != null and query.sort.field != ''">
-            ORDER BY ${query.sort.field}
+            ORDER BY t.${query.sort.field}
             <choose>
                 <when test="query.sort.type != null and query.sort.type.value == 'ASC'.toString()"> ASC</when>
                 <when test="query.sort.type != null and query.sort.type.value == 'DESC'.toString()"> DESC</when>

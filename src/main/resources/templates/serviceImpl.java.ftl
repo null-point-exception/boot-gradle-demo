@@ -4,7 +4,6 @@ package ${package.ServiceImpl};
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 </#if>
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import ${package.Entity}.${entity};
 import ${package.Mapper}.${table.mapperName};

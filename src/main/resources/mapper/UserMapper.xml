@@ -4,42 +4,91 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.practice.dao.UserMapper">
 
-    <select id="selectUsers" resultType="User">
-        SELECT * FROM user WHERE 1=1
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.practice.bean.entity.User">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+        <result column="salt" property="salt" />
+        <result column="create_by" property="createBy" />
+        <result column="create_date" property="createDate" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_date" property="updateDate" />
+        <result column="del_flag" property="delFlag" />
+    </resultMap>
+
+    <!-- 一对多查询映射结果 -->
+    <resultMap id="OneToManyResultMap" type="com.practice.bean.entity.User" extends="BaseResultMap">
+        <collection property="roles" columnPrefix="r_" resultMap="com.practice.dao.RoleMapper.BaseResultMap"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        SELECT
+        t.id
+        ,t.name
+        ,t.password
+        ,t.salt
+        ,t.create_by
+        ,t.create_date
+        ,t.update_by
+        ,t.update_date
+        ,t.del_flag
+        ,r.id r_id
+        ,r.role_name r_role_name
+        ,r.user_id r_user_id
+        ,r.create_by r_create_by
+        ,r.create_date r_create_date
+        ,r.update_by r_update_by
+        ,r.update_date r_update_date
+        FROM user t
+        LEFT JOIN role r ON t.id = r.user_id
+    </sql>
+
+    <select id="selectById" resultMap="OneToManyResultMap">
+        <include refid="Base_Column_List"/> WHERE t.id=#{id}
+    </select>
+
+    <select id="findByName" resultMap="OneToManyResultMap">
+        <include refid="Base_Column_List"/> WHERE t.name=#{name}
+    </select>
+
+    <select id="selectUsers" resultMap="OneToManyResultMap">
+        <include refid="Base_Column_List" /> WHERE 1=1
         <if test="query != null">
             <if test="query.name != null and query.name !=''">
-                AND name LIKE concat('%', #{query.name}, '%')
+                AND t.name LIKE concat('%', #{query.name}, '%')
             </if>
             <if test="query.password != null and query.password !=''">
-                AND password = #{query.password}
+                AND t.password = #{query.password}
             </if>
             <if test="query.createBy != null and query.createBy !=''">
-                AND create_by = #{query.createBy}
+                AND t.create_by = #{query.createBy}
             </if>
             <if test="query.startCreateDate != null">
-                AND DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%S') &gt;= #{query.startCreateDate}
+                AND DATE_FORMAT(t.create_date, '%Y-%m-%d %H:%i:%S') &gt;= #{query.startCreateDate}
             </if>
             <if test="query.endCreateDate != null">
-                AND DATE_FORMAT(create_date, '%Y-%m-%d %H:%i:%S') &lt;= #{query.endCreateDate}
+                AND DATE_FORMAT(t.create_date, '%Y-%m-%d %H:%i:%S') &lt;= #{query.endCreateDate}
             </if>
             <if test="query.updateBy != null and query.updateBy !=''">
-                AND update_by = #{query.updateBy}
+                AND t.update_by = #{query.updateBy}
             </if>
             <if test="query.startUpdateDate != null">
-                AND DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%S') &gt;= #{query.startUpdateDate}
+                AND DATE_FORMAT(t.update_date, '%Y-%m-%d %H:%i:%S') &gt;= #{query.startUpdateDate}
             </if>
             <if test="query.endUpdateDate != null">
-                AND DATE_FORMAT(update_date, '%Y-%m-%d %H:%i:%S') &lt;= #{query.endUpdateDate}
+                AND DATE_FORMAT(t.update_date, '%Y-%m-%d %H:%i:%S') &lt;= #{query.endUpdateDate}
             </if>
             <choose>
                 <when test="query.delFlag != null and query.delFlag == '1'.toString()">
-                    AND del_flag = '1'
+                    AND t.del_flag = '1'
                 </when>
                 <when test="query.delFlag != null and query.delFlag == '0'.toString()">
-                    AND del_flag = '0'
+                    AND t.del_flag = '0'
                 </when>
             </choose>
-            <include refid="com.practice.dao.CommonMapper.sortSql"></include>
+            <include refid="com.practice.dao.CommonMapper.sortSql"/>
         </if>
     </select>
 

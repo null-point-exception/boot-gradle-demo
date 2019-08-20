@@ -17,6 +17,20 @@ import java.util.List;
 public interface UserMapper extends BaseMapper<User> {
 
     /**
+     * 根据 ID 查询
+     *
+     * @param id 主键ID
+     */
+    User selectById(@Param("id") String id);
+
+    /**
+     * 根据 用户名 查询
+     *
+     * @param name 用户名
+     */
+    User findByName(@Param("name") String name);
+
+    /**
      * 根据查询条件查询用户列表
      *
      * @param query 查询条件

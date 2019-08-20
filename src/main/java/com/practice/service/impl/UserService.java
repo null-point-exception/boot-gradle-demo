@@ -10,8 +10,11 @@ import com.practice.bean.entity.User;
 import com.practice.bean.query.UserQuery;
 import com.practice.dao.UserMapper;
 import com.practice.service.BaseService;
+import com.practice.util.NumberUtils;
+import com.practice.util.PasswordHelper;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -32,26 +35,24 @@ public class UserService implements BaseService<UserMapper, User> {
         return mapper;
     }
 
+    @Override
+    public User add(User user) {
+        user.setId(NumberUtils.genUUID());
+        user.setSalt(NumberUtils.genUUID(5));
+        user.setPassword(PasswordHelper.encryptPassword(user.getPassword(), user.getSalt()));
+        mapper.insert(user);
+        // todo: 级联添加role和permission
+        return user;
+    }
+
     @SortAop(typeClass = User.class)
     public List<User> selectUsers(@Nullable UserQuery query) {
         return mapper.selectUsers(query);
     }
 
-    private List<User> selectList(UserQuery query) {
-        //单表部分简单查询
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.select("id", "name");
-        LambdaQueryWrapper<User> lambda = queryWrapper.lambda();
-        if (StrUtil.isNotBlank(query.getName())) {
-            lambda.and(w -> w.like(User::getName, query.getName()));
-        }
-        if (StrUtil.isNotBlank(query.getCreateBy())) {
-            lambda.or(w -> w.eq(User::getCreateBy, query.getCreateBy()));
-        }
-        if (StrUtil.isNotBlank(query.getUpdateBy())) {
-            lambda.or(w -> w.eq(User::getUpdateBy, query.getUpdateBy()));
-        }
-        return mapper.selectList(queryWrapper);
+    public User findByName(String name) {
+        Assert.notNull(name);
+        return mapper.findByName(name);
     }
 
     public PageInfo<User> selectUsersByPage(int pageNum, int pageSize, @Nullable UserQuery query) {
