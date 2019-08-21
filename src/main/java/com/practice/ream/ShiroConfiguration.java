@@ -42,8 +42,9 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/login", "anon");
         //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
-        filterChainDefinitionMap.put("/logout", "logout");
+        filterChainDefinitionMap.put("/logout", "anon");
         //允许swagger2访问
+        filterChainDefinitionMap.put("/doc", "anon");
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
         filterChainDefinitionMap.put("/swagger-resources/**", "anon");
         filterChainDefinitionMap.put("/v2/**", "anon");
@@ -117,7 +118,7 @@ public class ShiroConfiguration {
         //用户授权/认证信息Cache, 采用EhCache缓存
         //securityManager.setCacheManager(getEhCacheManager());
         //注入记住我管理器
-        securityManager.setRememberMeManager(rememberMeManager());
+        //securityManager.setRememberMeManager(rememberMeManager());
         securityManager.setSessionManager(shiroSession());
         return securityManager;
     }

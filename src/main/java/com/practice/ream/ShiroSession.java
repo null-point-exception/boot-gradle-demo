@@ -33,10 +33,8 @@ public class ShiroSession extends DefaultWebSessionManager {
     public ShiroSession() {
         super();
         //设置 shiro session 失效时间，默认为30分钟，这里现在设置为15分钟
-        //setGlobalSessionTimeout(MILLIS_PER_MINUTE * 15);
+        setGlobalSessionTimeout(MILLIS_PER_MINUTE * 15);
     }
-
-
 
     /**
      * 获取sessionId，原本是根据sessionKey来获取一个sessionId
@@ -56,10 +54,10 @@ public class ShiroSession extends DefaultWebSessionManager {
 
         } else {
             //请求头中如果有 authToken, 则其值为sessionId
-            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE, REFERENCED_SESSION_ID_SOURCE);
+            /*request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_SOURCE, REFERENCED_SESSION_ID_SOURCE);
             //sessionId
             request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID, sessionId);
-            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID, Boolean.TRUE);
+            request.setAttribute(ShiroHttpServletRequest.REFERENCED_SESSION_ID_IS_VALID, Boolean.TRUE);*/
             return sessionId;
         }
     }

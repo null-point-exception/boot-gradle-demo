@@ -46,7 +46,7 @@ public class AjaxPermissionsAuthorizationFilter extends FormAuthenticationFilter
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) {
 
-        Result<String> result = Result.fail("登陆已过期,请重新登陆");
+        Result<String> result = Result.fail("登录已过期,请重新登陆");
 
         String jsonStr = JSON.toJSONString(result);
         PrintWriter out = null;

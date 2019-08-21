@@ -1,11 +1,10 @@
-<template>
+<template><div>
   <el-table :data="tableData" empty-text="当前数据没有，请添加数据" style="width: 100%">
     <el-table-column label="序号" align="center" type="index" min-width="20%"></el-table-column>
     <el-table-column label="用户名" align="center" min-width="20%" prop="name">
       <template slot-scope="scope">
         <el-popover trigger="hover" placement="top">
           <p>用户名: {{ scope.row.name }}</p>
-          <p>密码: {{ scope.row.password }}</p>
           <p>更新者: {{ fillEmpty(scope.row.updateBy) }}</p>
           <p>更新时间: {{ scope.row.updateDate }}</p>
           <div slot="reference" class="name-wrapper">
@@ -32,6 +31,8 @@
         <el-button size="small" type="primary"> 添加 </el-button>
     </div>
   </el-table>
+</div>
+
 </template>
 
 <script>
@@ -50,12 +51,10 @@ export default {
       this.$axios({
         method: 'post',
         url: '/api/user/query',
-        data: {}
+        data: {},
       }).then((result) => {
-        var res = result.data;
-        if (res && res.code === 0) {
-          self.tableData = res.data;
-        }
+        if (!result) return;
+        self.tableData = result.data;
       })
     },
     handleEdit(index, row) {
