@@ -39,9 +39,6 @@ public class LoginApi {
             Subject currentUser = SecurityUtils.getSubject();
             AuthenticationToken token = new UserToken(user);
             currentUser.login(token);
-            //User u = service.findByName(user.getName());
-            //设置session时间
-            //currentUser.getSession().setTimeout(1000*60*30);
             //token信息
             tokenId = currentUser.getSession().getId();
         } catch (UnknownAccountException e) {
@@ -64,7 +61,7 @@ public class LoginApi {
     @GetMapping("api/user-info")
     public Result userInfo() {
         Subject currentUser = SecurityUtils.getSubject();
-        User u = service.findByName((String)currentUser.getPrincipal());
+        User u = (User)currentUser.getPrincipal();
         u.setPassword(null);
         u.setSalt(null);
         return Result.success("获取当前登录用户信息成功", u);

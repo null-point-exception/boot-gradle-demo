@@ -76,17 +76,13 @@ public class MyShiroRealm extends AuthorizingRealm {
         ByteSource credentialsSalt = PasswordHelper.getCredentialsSalt(loginUser.getPassword(), user.getSalt());
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 //用户名
-                username,
+                user,
                 //密码
                 user.getPassword(),
                 credentialsSalt,
                 //realm name
                 getName()
         );
-        //session中不需要保存密码
-        user.setPassword(null);
-        //将用户信息放入session中
-        SecurityUtils.getSubject().getSession().setAttribute(Constants.SESSION_USER_INFO, user);
         return authenticationInfo;
     }
 
