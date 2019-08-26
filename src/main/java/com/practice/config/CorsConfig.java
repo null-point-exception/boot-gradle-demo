@@ -2,14 +2,9 @@ package com.practice.config;
 
 import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
  * 跨域配置.
@@ -30,9 +25,28 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(originUrls.split(","))
                 .allowCredentials(true)
-                .allowedMethods("GET", "POST", "DELETE", "PUT","PATCH")
+                .allowedMethods("OPTIONS", "GET", "POST", "DELETE", "PUT", "PATCH")
                 .allowedHeaders("*")
                 .maxAge(3600);
     }
+
+    /**
+     * 此方法把该拦截器实例化成一个bean,否则在拦截器里无法注入其它bean
+     */
+    /*@Bean
+    SessionInterceptor sessionInterceptor() {
+        return new SessionInterceptor();
+    }
+    *//**
+     * 配置拦截器
+     *//*
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(sessionInterceptor())
+                .addPathPatterns("/**")
+                .excludePathPatterns("/login","/permission/userInsert",
+                        "/error","/tUser/insert","/gif/getGifCode");
+    }*/
+
 
 }

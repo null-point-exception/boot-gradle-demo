@@ -1,4 +1,4 @@
-package com.practice.ream;
+package com.practice.shiro;
 
 import com.practice.bean.entity.User;
 import lombok.Data;

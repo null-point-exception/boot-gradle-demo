@@ -89,7 +89,7 @@ export default {
         var token = result.data;
         //alert("登录成功");
         window.location.href = '#/index';
-        window.localStorage.setItem('authToken', token);
+        window.localStorage.setItem('authorization', token);
       })
     },
     resetForm(formName) {

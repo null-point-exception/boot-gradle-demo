@@ -36,7 +36,6 @@ public class PasswordHelper {
     }
 
     public static String encryptPassword(String password, String salt) {
-        System.out.println("salt==>" + salt);
         return new SimpleHash(
                 //加密算法
                 algorithmName,

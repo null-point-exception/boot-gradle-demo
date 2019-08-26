@@ -4,6 +4,12 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.practice.bean.entity.Permission;
 import com.practice.bean.entity.Role;
 import com.practice.bean.entity.User;
+import com.practice.util.RedisUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -17,6 +23,8 @@ public class LoginService {
     private UserService userService;
     @Resource
     private RoleService roleService;
+    @Resource
+    private RedisUtil util;
 
     //添加用户
     public User addUser(User user) {
@@ -44,8 +52,34 @@ public class LoginService {
         return role;
     }
 
-    //查询用户通过用户名
+    /**
+     * 通过用户名查询用户
+     */
     public User findByName(String name) {
         return userService.findByName(name);
     }
+
+    /**
+     * 通过用户id查询用户
+     */
+    public User findById(String id) {
+        User user = (User)util.get(id);
+        if (null == user) {
+            user = userService.findById(id);
+            util.set(id, user);
+        }
+        return user;
+    }
+
+    /**
+     * 注销
+     */
+    public void logout() {
+        User currentUser = (User)SecurityUtils.getSubject().getPrincipal();
+        if (currentUser != null) {
+            util.del(currentUser.getId());
+        }
+        SecurityUtils.getSubject().logout();
+    }
+
 }

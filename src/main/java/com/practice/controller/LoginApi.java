@@ -2,8 +2,9 @@ package com.practice.controller;
 
 import com.practice.base.Result;
 import com.practice.bean.entity.User;
-import com.practice.ream.UserToken;
-import com.practice.service.impl.UserService;
+import com.practice.shiro.UserToken;
+import com.practice.service.impl.LoginService;
+import com.practice.util.JWTUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -26,7 +27,7 @@ import java.io.Serializable;
 public class LoginApi {
 
     @Resource
-    private UserService service;
+    private LoginService service;
 
     @ApiOperation("登录")
     @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User", example = "{name:\"root\",password:\"root\"}")
@@ -39,8 +40,10 @@ public class LoginApi {
             Subject currentUser = SecurityUtils.getSubject();
             AuthenticationToken token = new UserToken(user);
             currentUser.login(token);
+            //Shiro认证通过后会将user信息放到subject内，生成token并返回
+            User u = (User) currentUser.getPrincipal();
             //token信息
-            tokenId = currentUser.getSession().getId();
+            tokenId = JWTUtil.sign(u.getId());
         } catch (UnknownAccountException e) {
             return Result.fail("用户不存在");
         } catch (IncorrectCredentialsException e) {
@@ -73,7 +76,7 @@ public class LoginApi {
     @ApiOperation("退出")
     @GetMapping("logout")
     public Result logout() {
-        SecurityUtils.getSubject().logout();
+        service.logout();
         return Result.success("注销成功");
     }
 }

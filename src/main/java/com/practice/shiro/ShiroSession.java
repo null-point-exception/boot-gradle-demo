@@ -25,7 +25,7 @@ public class ShiroSession extends DefaultWebSessionManager {
     /**
      * 定义的请求头中使用的标记key，用来传递 token
      */
-    public static final String AUTH_TOKEN = "authToken";
+    public static final String AUTH_TOKEN = "authorization";
 
     private static final String REFERENCED_SESSION_ID_SOURCE = "Stateless request";
 

@@ -1,12 +1,10 @@
-package com.practice.ream;
+package com.practice.shiro;
 
-import com.practice.base.Constants;
 import com.practice.bean.entity.Permission;
 import com.practice.bean.entity.Role;
 import com.practice.bean.entity.User;
 import com.practice.service.impl.LoginService;
 import com.practice.util.PasswordHelper;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -25,6 +23,14 @@ public class MyShiroRealm extends AuthorizingRealm {
 
     @Resource
     private LoginService service;
+
+    /**
+     *  找它的原因是这个方法返回true
+     */
+    @Override
+    public boolean supports(AuthenticationToken token) {
+        return token instanceof UserToken;
+    }
 
     /**
      * 角色权限和对应权限添加

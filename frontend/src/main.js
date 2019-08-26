@@ -11,12 +11,12 @@ import 'element-ui/lib/theme-chalk/index.css';
 // http request 拦截器
 axios.interceptors.request.use(
   config => {
-    var token = window.localStorage.getItem('authToken');//我的token 存储在 localStorage中
+    var token = window.localStorage.getItem('authorization');//我的token 存储在 localStorage中
     // 如果 xtoken 存在 就设置请求头
     if (token) {
       //xtoken = 'Bearer' + xtoken
       console.log(token)
-      config.headers['authToken'] = token//配置请求头中  Authorization 字段的值为拿到的token
+      config.headers['authorization'] = token//配置请求头中  Authorization 字段的值为拿到的token
     }
     return config;
   },
@@ -27,7 +27,7 @@ axios.interceptors.request.use(
   );
 
 axios.interceptors.response.use(data=> {
-  if (data.status && data.status == 200 && data.data.code == 1) {
+  if (data.data.code != 0) {
     Message.error({message: data.data.data || data.data.message});
     window.location.href = '#/';
     return ;

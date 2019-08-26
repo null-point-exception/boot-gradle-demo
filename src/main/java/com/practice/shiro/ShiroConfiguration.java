@@ -1,19 +1,23 @@
-package com.practice.ream;
+package com.practice.shiro;
 
+import org.apache.shiro.authc.Authenticator;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.codec.Base64;
+import org.apache.shiro.authc.pam.FirstSuccessfulStrategy;
+import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.mgt.SessionStorageEvaluator;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.mgt.DefaultWebSessionStorageEvaluator;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -34,7 +38,7 @@ public class ShiroConfiguration {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         Map<String, Filter> filterMap = new LinkedHashMap<>();
-        filterMap.put("authc", new AjaxPermissionsAuthorizationFilter());
+        filterMap.put("authc", createAuthFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
         //拦截器.
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
@@ -64,6 +68,33 @@ public class ShiroConfiguration {
         return shiroFilterFactoryBean;
     }
 
+    @Bean
+    public SecurityManager securityManager() {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        securityManager.setAuthenticator(authenticator());
+        return securityManager;
+    }
+
+    /**
+     * 初始化Authenticator
+     */
+    @Bean
+    public Authenticator authenticator() {
+        ModularRealmAuthenticator authenticator = new ModularRealmAuthenticator();
+        //设置两个Realm，一个用于用户登录验证和访问权限获取；一个用于jwt token的认证
+        authenticator.setRealms(Arrays.asList(jwtShiroRealm(), userRealm()));
+        //设置多个realm认证策略，一个成功即跳过其它的
+        authenticator.setAuthenticationStrategy(new FirstSuccessfulStrategy());
+        return authenticator;
+    }
+
+    @Bean("userRealm")
+    public MyShiroRealm userRealm() {
+        MyShiroRealm userRealm = new MyShiroRealm();
+        userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        return userRealm;
+    }
+
     /**
      * 凭证匹配器（由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了）
      */
@@ -77,55 +108,23 @@ public class ShiroConfiguration {
         return hashedCredentialsMatcher;
     }
 
-    @Bean
-    public MyShiroRealm userRealm() {
-        MyShiroRealm userRealm = new MyShiroRealm();
-        userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-        return userRealm;
+    /**
+     * 用于JWT token认证的realm
+     */
+    @Bean("jwtRealm")
+    public Realm jwtShiroRealm() {
+        return new JwtShiroRealm();
     }
 
     /**
-     * cookie对象;
-     * rememberMeCookie()方法是设置Cookie的生成模版，比如cookie的name，cookie的有效时间等等。
-     * @return
+     * 禁用session, 不保存用户登录状态。保证每次请求都重新认证。
+     * 需要注意的是，如果用户代码里调用Subject.getSession()还是可以用session，如果要完全禁用，要配合下面的noSessionCreation的Filter来实现
      */
     @Bean
-    public SimpleCookie rememberMeCookie(){
-        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
-        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
-        // 记住我cookie生效时间30天 ,单位秒
-        simpleCookie.setMaxAge(259200);
-        return simpleCookie;
-    }
-
-    /**
-     * cookie管理对象;
-     * rememberMeManager()方法是生成rememberMe管理器，而且要将这个rememberMe管理器设置到securityManager中
-     */
-    @Bean
-    public CookieRememberMeManager rememberMeManager(){
-        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
-        cookieRememberMeManager.setCookie(rememberMeCookie());
-        //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
-        cookieRememberMeManager.setCipherKey(Base64.decode("2AvVhdsgUs0FSA3SDFAdag=="));
-        return cookieRememberMeManager;
-    }
-
-    @Bean
-    public SecurityManager securityManager() {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(userRealm());
-        //用户授权/认证信息Cache, 采用EhCache缓存
-        //securityManager.setCacheManager(getEhCacheManager());
-        //注入记住我管理器
-        //securityManager.setRememberMeManager(rememberMeManager());
-        securityManager.setSessionManager(shiroSession());
-        return securityManager;
-    }
-
-    @Bean
-    public ShiroSession shiroSession() {
-        return new ShiroSession();
+    protected SessionStorageEvaluator sessionStorageEvaluator() {
+        DefaultWebSessionStorageEvaluator sessionStorageEvaluator = new DefaultWebSessionStorageEvaluator();
+        sessionStorageEvaluator.setSessionStorageEnabled(false);
+        return sessionStorageEvaluator;
     }
 
     /**
@@ -156,4 +155,9 @@ public class ShiroConfiguration {
         return new LifecycleBeanPostProcessor();
     }
 
+
+    //注意不要加@Bean注解，不然spring会自动注册成filter
+    protected JwtAuthFilter createAuthFilter() {
+        return new JwtAuthFilter();
+    }
 }

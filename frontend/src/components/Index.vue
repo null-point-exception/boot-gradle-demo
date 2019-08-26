@@ -25,18 +25,16 @@ export default {
       })
     },
     logout() {
-      //window.localStorage.removeItem('authToken');
-      let self = this
       // 请求后台
       this.$axios({
         method: 'get',
         url: 'http://localhost:8080/logout',
       }).then((result) => {
-          window.localStorage.removeItem('authToken');
+          window.localStorage.removeItem('authorization');
           window.location.href = '#/';
       })
     },
-  },mounted() {
+  },created() {
     this.getCurrentUser();
   }
 }
