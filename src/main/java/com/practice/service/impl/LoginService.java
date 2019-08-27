@@ -16,6 +16,11 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 登录业务实现类.
+ *
+ * @author kexin.ding
+ */
 @Service
 public class LoginService {
 

@@ -17,7 +17,7 @@ public class UserToken extends UsernamePasswordToken {
     private User user;
 
     public UserToken(User user) {
-        super(user.getName(), user.getPassword(), user.isRememberMe());
+        super(user.getName(), user.getPassword());
         this.user = user;
     }
 

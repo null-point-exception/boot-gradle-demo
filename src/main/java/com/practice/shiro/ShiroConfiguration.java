@@ -155,8 +155,9 @@ public class ShiroConfiguration {
         return new LifecycleBeanPostProcessor();
     }
 
-
-    //注意不要加@Bean注解，不然spring会自动注册成filter
+    /**
+     * 注意不要加@Bean注解，不然spring会自动注册成filter
+     */
     protected JwtAuthFilter createAuthFilter() {
         return new JwtAuthFilter();
     }

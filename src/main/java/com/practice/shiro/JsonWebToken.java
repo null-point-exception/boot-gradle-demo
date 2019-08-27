@@ -9,15 +9,15 @@ import org.apache.shiro.authc.HostAuthenticationToken;
  * @author kexin.ding
  */
 @Data
-public class JwtToken implements HostAuthenticationToken {
+public class JsonWebToken implements HostAuthenticationToken {
 
     private String token;
     private String host;
 
-    public JwtToken(String token) {
+    public JsonWebToken(String token) {
         this(token, null);
     }
-    public JwtToken(String token, String host) {
+    public JsonWebToken(String token, String host) {
         this.token = token;
         this.host = host;
     }

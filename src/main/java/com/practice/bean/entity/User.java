@@ -62,8 +62,4 @@ public class User {
     @TableField(exist = false)
     private List<Role> roles;
 
-    @ApiModelProperty(position = 10, required = false, dataType = "boolean", value = "记住我", name = "rememberMe")
-    @TableField(exist = false)
-    private boolean rememberMe = false;
-
 }

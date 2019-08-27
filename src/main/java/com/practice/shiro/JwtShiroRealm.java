@@ -39,7 +39,7 @@ public class JwtShiroRealm extends AuthorizingRealm {
      */
     @Override
     public boolean supports(AuthenticationToken token) {
-        return token instanceof JwtToken;
+        return token instanceof JsonWebToken;
     }
 
     /**
@@ -47,8 +47,8 @@ public class JwtShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
-        JwtToken jwtToken = (JwtToken) authcToken;
-        String token = jwtToken.getToken();
+        JsonWebToken jwt = (JsonWebToken) authcToken;
+        String token = jwt.getToken();
 
         String userId = JWTUtil.getUserId(token);
         if (StrUtil.isBlank(userId)) {
@@ -59,9 +59,7 @@ public class JwtShiroRealm extends AuthorizingRealm {
             throw new AuthenticationException("token过期，请重新登录");
         }
 
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user, user.getSalt(), "jwtRealm");
-
-        return authenticationInfo;
+        return new SimpleAuthenticationInfo(user, user.getSalt(), getName());
     }
 
     /**

@@ -48,9 +48,9 @@ public class JwtAuthFilter extends AuthenticatingFilter {
      */
     @Override
     protected AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) {
-        String jwtToken = JWTUtil.getAuthzHeader(servletRequest);
-        if (StrUtil.isNotBlank(jwtToken) && !JWTUtil.isTokenExpired(jwtToken)) {
-            return new JwtToken(jwtToken);
+        String jwt = JWTUtil.getAuthzHeader(servletRequest);
+        if (StrUtil.isNotBlank(jwt) && !JWTUtil.isTokenExpired(jwt)) {
+            return new JsonWebToken(jwt);
         }
         return null;
     }

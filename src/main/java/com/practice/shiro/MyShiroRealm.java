@@ -80,7 +80,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         }*/
         // 这里盐值可以自定义
         ByteSource credentialsSalt = PasswordHelper.getCredentialsSalt(loginUser.getPassword(), user.getSalt());
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
+        return new SimpleAuthenticationInfo(
                 //用户名
                 user,
                 //密码
@@ -89,7 +89,6 @@ public class MyShiroRealm extends AuthorizingRealm {
                 //realm name
                 getName()
         );
-        return authenticationInfo;
     }
 
     @Override
