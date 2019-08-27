@@ -42,6 +42,7 @@ swagger:
   description: 技术支持：SaltzmanAlaric（一方通行）
   termsOfServiceUrl: https://github.com/SaltzmanAlaric/
   version: 1.0
+  header: ${jwt.header}
 
 # mybatis-plus
 mybatis-plus:

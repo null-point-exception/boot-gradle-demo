@@ -35,13 +35,13 @@
  var assetsRoot = path.resolve(__dirname, '../build/resources/main/frontend')
  ```
  dev开发模式添加后端端口代理：
- ```js
+ ```
   proxyTable: {
        '/api/**': 'http://localhost:8080'
      },
  ```
  build部署模式更改打包位置：
- ```js
+ ```
     // Template for index.html
     index: path.resolve(assetsRoot, 'index.html'),
 

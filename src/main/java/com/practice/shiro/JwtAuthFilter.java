@@ -32,11 +32,15 @@ public class JwtAuthFilter extends AuthenticatingFilter {
         if (this.isLoginRequest(request, response)) {
             return true;
         }
+        String jwt = JWTUtil.getAuthzHeader(request);
+        if (StrUtil.isNotBlank(jwt)) {
+            return true;
+        }
         boolean allowed = false;
         try {
             allowed = executeLogin(request, response);
         } catch (IllegalStateException e) {
-            log.error("Not found any token");
+            log.error("Not found any token:" + WebUtils.toHttp(request).getRequestURL());
         } catch (Exception e) {
             log.error("Error occurs when login", e);
         }

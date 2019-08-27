@@ -80,7 +80,7 @@ public class ShiroConfiguration {
     @Bean
     public Authenticator authenticator() {
         ModularRealmAuthenticator authenticator = new ModularRealmAuthenticator();
-        //设置两个Realm，一个用于用户登录验证和访问权限获取；一个用于jwt token的认证
+        //设置两个Realm，一个用于用户登录验证和访问权限获取；一个用于jwt的认证
         authenticator.setRealms(Arrays.asList(jwtRealm(), userRealm()));
         //设置多个realm认证策略，一个成功即跳过其它的
         authenticator.setAuthenticationStrategy(new FirstSuccessfulStrategy());
@@ -93,7 +93,7 @@ public class ShiroConfiguration {
     }
 
     /**
-     * 用于JWT token认证的realm
+     * 用于JWT认证的realm
      */
     @Bean("jwtRealm")
     public Realm jwtRealm() {
@@ -113,7 +113,7 @@ public class ShiroConfiguration {
 
     /**
      * 启动shiro在ioc容器中的注解，只有在使用
-     * 开启 Shiro 的注解功能 (如 @RequiresRoles,@RequiresPermissions),需借助 SpringAOP 扫描使用Shiro注解的类,并在必要时进行安全逻辑验证,需要配置两个bean(DefaultAdvisorAutoProxyCreator(可选 ) 和 AuthorizationAttributeSourceAdvisor) 实现此功能。Spring Boot系列安全框架Apache Shiro基本功能
+     * 开启 Shiro 的注解功能 (如 @RequiresRoles,@RequiresPermissions),需借助 SpringAOP 扫描使用Shiro注解的类,并在必要时进行安全逻辑验证,需要配置两个bean(DefaultAdvisorAutoProxyCreator(可选)和AuthorizationAttributeSourceAdvisor) 实现此功能。Spring Boot系列安全框架Apache Shiro基本功能
      */
     @Bean
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {

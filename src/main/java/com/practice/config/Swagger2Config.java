@@ -45,6 +45,7 @@ public class Swagger2Config {
     private String version;
     private String publishDate;
     private String active;
+    private String header;
 
     @Bean
     public Docket createRestApi() {
@@ -80,7 +81,7 @@ public class Swagger2Config {
 
     private List<ApiKey> securitySchemes() {
         List<ApiKey> apiKeyList= new ArrayList<>();
-        apiKeyList.add(new ApiKey("令牌", "authToken", "header"));
+        apiKeyList.add(new ApiKey("令牌", "authorization", "header"));
         return apiKeyList;
     }
 

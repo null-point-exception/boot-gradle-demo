@@ -2,6 +2,7 @@ package com.practice.controller;
 
 import com.practice.base.Result;
 import com.practice.bean.entity.User;
+import com.practice.bean.vo.LoginUserVo;
 import com.practice.shiro.UserToken;
 import com.practice.service.impl.LoginService;
 import com.practice.util.JWTUtil;
@@ -30,20 +31,24 @@ public class LoginApi {
     private LoginService service;
 
     @ApiOperation("登录")
-    @ApiImplicitParam(name = "user", value = "用户信息", required = true, dataType = "User", example = "{name:\"root\",password:\"root\"}")
+    @ApiImplicitParam(name = "userVo", value = "用户信息", required = true, dataType = "LoginUserVo")
     @PostMapping("login")
     @ResponseBody
-    public Result login(@RequestBody User user) throws IOException {
+    public Result login(@RequestBody LoginUserVo userVo) throws IOException {
         //token信息
         Serializable tokenId = null;
         try {
+            User loginUser = new User();
+            loginUser.setName(userVo.getName());
+            loginUser.setPassword(userVo.getPassword());
+
             Subject currentUser = SecurityUtils.getSubject();
-            AuthenticationToken token = new UserToken(user);
+            AuthenticationToken token = new UserToken(loginUser);
             currentUser.login(token);
             //Shiro认证通过后会将user信息放到subject内，生成token并返回
-            User u = (User) currentUser.getPrincipal();
+            User user = (User) currentUser.getPrincipal();
             //token信息
-            tokenId = JWTUtil.sign(u.getId());
+            tokenId = JWTUtil.sign(user.getId());
         } catch (UnknownAccountException e) {
             return Result.fail("用户不存在");
         } catch (IncorrectCredentialsException e) {
