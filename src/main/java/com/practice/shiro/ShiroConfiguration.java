@@ -1,7 +1,6 @@
 package com.practice.shiro;
 
 import org.apache.shiro.authc.Authenticator;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authc.pam.FirstSuccessfulStrategy;
 import org.apache.shiro.authc.pam.ModularRealmAuthenticator;
 import org.apache.shiro.mgt.SecurityManager;
@@ -82,38 +81,23 @@ public class ShiroConfiguration {
     public Authenticator authenticator() {
         ModularRealmAuthenticator authenticator = new ModularRealmAuthenticator();
         //设置两个Realm，一个用于用户登录验证和访问权限获取；一个用于jwt token的认证
-        authenticator.setRealms(Arrays.asList(jwtShiroRealm(), userRealm()));
+        authenticator.setRealms(Arrays.asList(jwtRealm(), userRealm()));
         //设置多个realm认证策略，一个成功即跳过其它的
         authenticator.setAuthenticationStrategy(new FirstSuccessfulStrategy());
         return authenticator;
     }
 
     @Bean("userRealm")
-    public MyShiroRealm userRealm() {
-        MyShiroRealm userRealm = new MyShiroRealm();
-        userRealm.setCredentialsMatcher(hashedCredentialsMatcher());
-        return userRealm;
-    }
-
-    /**
-     * 凭证匹配器（由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了）
-     */
-    @Bean
-    public HashedCredentialsMatcher hashedCredentialsMatcher() {
-        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        //散列算法:这里使用MD5算法;
-        hashedCredentialsMatcher.setHashAlgorithmName("md5");
-        //散列的次数，比如散列两次，相当于 md5(md5(""));
-        hashedCredentialsMatcher.setHashIterations(2);
-        return hashedCredentialsMatcher;
+    public UserRealm userRealm() {
+        return new UserRealm();
     }
 
     /**
      * 用于JWT token认证的realm
      */
     @Bean("jwtRealm")
-    public Realm jwtShiroRealm() {
-        return new JwtShiroRealm();
+    public Realm jwtRealm() {
+        return new JwtRealm();
     }
 
     /**

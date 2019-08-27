@@ -6,6 +6,7 @@ import com.practice.bean.entity.User;
 import com.practice.service.impl.LoginService;
 import com.practice.util.PasswordHelper;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -19,10 +20,20 @@ import javax.annotation.Resource;
  *
  * @author kexin.ding
  */
-public class MyShiroRealm extends AuthorizingRealm {
+public class UserRealm extends AuthorizingRealm {
 
     @Resource
     private LoginService service;
+
+    public UserRealm() {
+        //凭证匹配器（由于我们的密码校验交给Shiro的SimpleAuthenticationInfo进行处理了）
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        //散列算法:这里使用MD5算法;
+        hashedCredentialsMatcher.setHashAlgorithmName("md5");
+        //散列的次数，比如散列两次，相当于 md5(md5(""));
+        hashedCredentialsMatcher.setHashIterations(2);
+        this.setCredentialsMatcher(hashedCredentialsMatcher);
+    }
 
     /**
      *  找它的原因是这个方法返回true

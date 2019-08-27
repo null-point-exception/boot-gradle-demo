@@ -16,16 +16,16 @@ import org.apache.shiro.subject.PrincipalCollection;
 import javax.annotation.Resource;
 
 /**
- * jwt shiro认证.
+ * jwt认证.
  *
  * @author kexin.ding
  */
-public class JwtShiroRealm extends AuthorizingRealm {
+public class JwtRealm extends AuthorizingRealm {
 
     @Resource
     private LoginService service;
 
-    public JwtShiroRealm() {
+    public JwtRealm() {
         //这里使用我们自定义的Matcher
         this.setCredentialsMatcher((auth, info) -> {
             String token = (String) auth.getCredentials();
